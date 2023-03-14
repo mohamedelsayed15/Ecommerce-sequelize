@@ -1,15 +1,16 @@
 const express = require('express')
 const router = express.Router()
 const productsController = require('../controllers/products')
+const auth = require('../middleware/auth')
 
-router.get('/find-all', productsController.getProducts)
+router.get('/find-all',auth, productsController.getProducts)
 
-router.get('/find-by-id/:id', productsController.findById)
+router.get('/find-by-id/:id', auth, productsController.findByPk)
 
-router.post('/add-product', productsController.addProduct)
+router.post('/add-product' ,auth,productsController.addProduct)
 
-router.post('/change-price/:id', productsController.changePrice)
+router.post('/change-price/:id', auth, productsController.changePrice)
 
-router.delete('/delete-product/:id', productsController.deleteProduct)
+router.delete('/delete-product/:id', auth,productsController.deleteProduct)
 
 module.exports = router

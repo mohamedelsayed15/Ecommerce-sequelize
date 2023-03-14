@@ -1,6 +1,7 @@
 const Sequelize = require('sequelize')
-
 const sequelize = require('../util/mysql')
+const bcrypt = require('bcryptjs')
+const jwt = require('jsonwebtoken')
 
 const User = sequelize.define('user', {
 
@@ -33,7 +34,16 @@ const User = sequelize.define('user', {
 User.beforeSave(async (user) => {
     if (user.changed('password')) {
 
-      user.password = await bcrypt.hash(user.password, 8)
+    user.password = await bcrypt.hash(user.password, 8)
     }
-  })
-module.exports = Product
+})
+//tokens table
+const Token = sequelize.define('Token', {
+    token: {
+        type: Sequelize.STRING,
+        allowNull: false,
+        unique: true
+    }
+})
+
+module.exports = { User , Token}

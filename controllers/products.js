@@ -1,17 +1,12 @@
 const Product = require('../models/product')
 const {Op}  = require('sequelize')
 const Cart = require('../models/cart')
+const { User } = require('../models/user')
 
 exports.getProducts = async (req, res) => {
     try {
 
-        const products = await Product.findAll({
-            where: {
-                price: {
-                    [Op.lt]: 60
-                }
-            }
-        })
+        const products = await req.user.getProducts()
 
         res.send(products)
 
@@ -21,10 +16,12 @@ exports.getProducts = async (req, res) => {
     }
 }
 
-exports.findById = async (req, res) => {
+exports.findByPk = async (req, res) => {
     try {
 
         const product = await Product.findByPk(req.params.id)
+
+        if (req.user.id !== product.userId) { return res.status(403).send()}
 
         res.send(product)
 
@@ -37,6 +34,8 @@ exports.changePrice = async (req, res) => {
     try {
 
         const product = await Product.findByPk(req.params.id)
+
+        if (req.user.id !== product.userId) { return res.status(403).send()}
 
         product.price = req.body.price
 
@@ -53,7 +52,9 @@ exports.deleteProduct = async (req, res) => {
     try {
 
         const product = await Product.findByPk(req.params.id)
-            
+
+        if (req.user.id !== product.userId) { return res.status(403).send()}
+
         await product.destroy()
 
         res.send(product)
@@ -71,19 +72,18 @@ exports.addProduct = async (req, res) => {
             !req.body.image
         ) { return res.send("invalid") }
 
-        const product = await Product.create({
+        //await req.user.createProduct()   method created by sequelize when relationships are set
+
+        const product = await req.user.createProduct({//auto save  //auto fill for id
             tittle: req.body.tittle,
             description:req.body.description,
             price:req.body.price,
-            image_url:req.body.image
+            image_url: req.body.image
         })
-
-        await product.save()
 
         res.send(product)
 
     } catch (e) { 
-        console.log(e)
         res.send("missing information")
     }
 }
