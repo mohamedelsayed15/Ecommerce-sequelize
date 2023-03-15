@@ -11,7 +11,7 @@ const auth = async (req, res, next) => {
 
         const user = await User.findByPk(decoded.id)
 
-        if (!user) { throw new Error()}
+        if (!user) {throw new Error()}
 
         const tokens = await user.getTokens()
 

@@ -1,7 +1,26 @@
+const Sequelize = require('sequelize')
 
-module.exports = class Cart {
+const sequelize = require('../util/mysql')
 
-    static async addProduct(id, productPrice) {
+const Cart = sequelize.define('cart', {
 
+    id: {
+        type: Sequelize.INTEGER,
+        autoIncrement: true,
+        allowNull: false,
+        primaryKey: true 
     }
-}
+})
+const CartItem = sequelize.define('cartItem', {
+
+    id: {
+        type: Sequelize.INTEGER,
+        autoIncrement: true,
+        allowNull: false,
+        primaryKey: true 
+    },
+    quantity: Sequelize.INTEGER
+})
+
+
+module.exports = {Cart ,CartItem}

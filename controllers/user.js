@@ -2,6 +2,7 @@ const { User } = require('../models/user')
 const { Token } = require('../models/user')
 const bcrypt = require('bcryptjs')
 const jwt = require('jsonwebtoken')
+const { Cart } = require('../models/cart')
 exports.signup = async (req, res) => { 
     try {
 
@@ -16,6 +17,8 @@ exports.signup = async (req, res) => {
         const token = await jwt.sign({ id: user.id.toString() }, process.env.JWT)
 
         await user.createToken({ token })
+
+        const cart = await user.createCart()
 
         user.password = ''
 
@@ -47,6 +50,18 @@ exports.login = async (req, res) => {
 
     } catch (e) { 
         console.log(e)
+        res.send(e)
+    }
+}
+
+exports.deleteUser = async (req, res) => {
+    try {
+
+        await req.user.destroy()
+
+        res.send(req.user)
+
+    } catch (e) { 
         res.send(e)
     }
 }
