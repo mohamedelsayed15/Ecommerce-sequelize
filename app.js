@@ -5,6 +5,8 @@ const { User } = require('./models/user')
 const { Token } = require('./models/user')
 const { Cart } = require('./models/cart')
 const { CartItem } = require('./models/cart')
+const { Order } = require('./models/order')
+const { OrderItem } = require('./models/order')
 const adminRoutes = require('./routes/admin')
 const shopRoutes = require('./routes/shop')
 const userRoutes = require('./routes/user')
@@ -44,6 +46,10 @@ Cart.hasMany(CartItem)
 CartItem.belongsTo(Product, { constraints: true, onDelete: 'CASCADE' })
 Product.hasMany(CartItem)
 
+Order.belongsTo(User)
+User.hasMany(Order)
+Order.belongsToMany(Product, { through: OrderItem })
+Product.belongsToMany(Order, { through: OrderItem })
 
 
 const me = async () => await sequelize.sync()//{force : true}//during development only

@@ -1,7 +1,6 @@
 const Sequelize = require('sequelize')
 const sequelize = require('../util/mysql')
 const bcrypt = require('bcryptjs')
-const jwt = require('jsonwebtoken')
 
 const User = sequelize.define('user', {
 

@@ -18,7 +18,7 @@ exports.signup = async (req, res) => {
 
         await user.createToken({ token })
 
-        const cart = await user.createCart()
+        await user.createCart()
 
         user.password = ''
 

@@ -8,9 +8,12 @@ router.get('/', productsController.getProducts)
 
 router.get('/cart', auth, shopController.getCart)
 
-router.post('/cart/add-to-cart/:id',auth ,shopController.postCart)
+router.post('/cart/add-to-cart/:id', auth, shopController.postCart)
+
+router.get('/order-cart',auth ,shopController.orderCart)
+
+router.get('/get-orders',auth ,shopController.getOrders)
 
 router.delete('/cart/:id',auth ,shopController.deleteProductFromCart)
-
 
 module.exports = router
