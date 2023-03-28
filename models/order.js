@@ -11,6 +11,7 @@ const Order = sequelize.define('order', {
         primaryKey: true 
     }
 })
+
 const OrderItem = sequelize.define('orderItem', {
 
     id: {

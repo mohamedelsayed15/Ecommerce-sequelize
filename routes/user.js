@@ -3,10 +3,13 @@ const router = express.Router()
 const userController = require('../controllers/user')
 const auth = require('../middleware/auth')
 
+router.get('/create-user', userController.getSignup)
 
-router.post('/create-user', userController.signup)
+router.post('/create-user', userController.postSignup)
 
-router.post('/login-user', userController.login)
+router.get('/login-user', userController.getLogin)
+
+router.post('/login-user', userController.postLogin)
 
 router.delete('/delete-user', auth,userController.deleteUser)
 

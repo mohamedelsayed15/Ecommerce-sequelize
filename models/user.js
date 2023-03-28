@@ -33,9 +33,11 @@ const User = sequelize.define('user', {
 User.beforeSave(async (user) => {
     if (user.changed('password')) {
 
-    user.password = await bcrypt.hash(user.password, 8)
+        user.password = await bcrypt.hash(user.password, 8)
+
     }
 })
+
 //tokens table
 const Token = sequelize.define('Token', {
     token: {

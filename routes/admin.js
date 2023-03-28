@@ -7,7 +7,9 @@ router.get('/find-all',auth, productsController.getProducts)
 
 router.get('/find-by-id/:id', auth, productsController.findByPk)
 
-router.post('/add-product' ,auth,productsController.addProduct)
+router.get('/sell-product' ,productsController.getAddProduct)
+
+router.post('/sell-product' ,productsController.postAddProduct)
 
 router.post('/change-price/:id', auth, productsController.changePrice)
 

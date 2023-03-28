@@ -1,10 +1,13 @@
 const { User } = require('../models/user')
-const { Token } = require('../models/user')
 const bcrypt = require('bcryptjs')
 const jwt = require('jsonwebtoken')
-const { Cart } = require('../models/cart')
-exports.signup = async (req, res) => { 
-    try {
+
+
+exports.getSignup = async (req,res) => { 
+    res.render('signup.ejs')
+}
+exports.postSignup = async (req, res) => { 
+    try { 
 
         const user = await User.create({
             name: req.body.name,
@@ -14,7 +17,7 @@ exports.signup = async (req, res) => {
 
         await user.save()
 
-        const token = await jwt.sign({ id: user.id.toString() }, process.env.JWT)
+        const token = await jwt.sign({ id: user.id }, process.env.JWT)
 
         await user.createToken({ token })
 
@@ -30,17 +33,26 @@ exports.signup = async (req, res) => {
         res.send(e)
     }
 }
-exports.login = async (req, res) => { 
+exports.getLogin = async (req,res) => { 
+    res.render('login.ejs')
+}
+//login
+exports.postLogin = async (req, res) => { 
     try {
+        //fetching user
         const user = await User.findOne({ where: { email: req.body.email } })
 
-        if (!user) { return res.send("couldn't find user")}
+        if (!user) { return res.send("couldn't find user") }
+
+        //compare hashed password
 
         const compared = await bcrypt.compare(req.body.password, user.password)
 
         if (compared === false) { return res.send("couldn't find user") }
 
-        const token = await jwt.sign({ id: user.id.toString() }, process.env.JWT)
+        //generating jwt token
+
+        const token = await jwt.sign({ id: user.id}, process.env.JWT)
 
         await user.createToken({ token })
 

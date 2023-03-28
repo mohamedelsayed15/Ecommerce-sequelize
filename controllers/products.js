@@ -63,10 +63,15 @@ exports.deleteProduct = async (req, res) => {
         res.send(e)
     }
 }
+exports.getAddProduct = async (req,res) => { 
+    res.render('sell-product.ejs', {pageTitle:'Sell Product'})
+}
 
-exports.addProduct = async (req, res) => {
+exports.postAddProduct = async (req, res) => {
     try {
-        if (!req.body.tittle ||
+        console.log(req.params.title)
+        console.log(req.body)
+        if (!req.body.title ||
             !req.body.description ||
             !req.body.price ||
             !req.body.image

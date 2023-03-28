@@ -76,7 +76,7 @@ module.exports.orderCart = async (req, res) => {
     }
 }
 module.exports.getOrders = async (req, res) => {
-    try { 
+    try {
 
         const orders = await req.user.getOrders({ include: 'products' })
 

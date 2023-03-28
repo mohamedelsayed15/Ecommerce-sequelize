@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>E-commerce</title>
+    <link rel="stylesheet"  href="/css/main.css">
+    <link rel="stylesheet"  href="/css/login&signup.css">
+</head>
+<body>
+        <nav id="navbar">
+                <ul>
+                    <li id="logo">E-commerce</li>
+                    <li><a href="/">Shop</a></li>
+                    <li><a href="">Orders</a></li>
+                    <li><a href="">Cart</a></li>
+                    <li><a href="/admin/sell-product">Sell Product</a></li>
+                    <li><a href="">About</a></li>
+                    <li><a href="">Contact</a></li>
+                </ul>
+        </nav>
+        <div class="container">
+
+        <form method="post" action="/user/create-user">
+            <label for="name">Name</label>
+                <br>
+                <input type="name" autocomplete="off" name="name" id="name" required>
+                <br>
+                <label for="email">Email</label>
+                <br>
+                <input type="email" name="email"  id="email" required>
+                <br>
+                <label for="password">Password</label>
+                <br>
+                <input type="password" name="password" id="password" required>
+                <br>
+                <label for="confirmPassword">Confirm password</label>
+                <br>
+                <input type="password" name="confirmPassword" id="password" required>
+                <br>
+                <input id="button" type="submit" value="SIGN UP">
+        </form>
+    </div>
+    <footer id="main-footer"> 
+        <p>Copyright &copy; 2023 E-commerce</p>
+    </footer>
+</body>
+</html>

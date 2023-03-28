@@ -10,18 +10,33 @@ const { OrderItem } = require('./models/order')
 const adminRoutes = require('./routes/admin')
 const shopRoutes = require('./routes/shop')
 const userRoutes = require('./routes/user')
+const bodyParser = require('body-parser')
 const app = express()
 //parser //json data limiter
+app.use(bodyParser.urlencoded({ extended: true }));
+app.use(express.static('public'));
 app.use(express.json({ limit: '1kb' }))
+app.set('view engine', 'ejs');
 
 app.use('/admin',adminRoutes)
 app.use('/shop', shopRoutes)
 app.use('/user', userRoutes)
+app.get('/', (req, res) => { 
+    try {
+        const products = [{ id: 1, title: 'fine foods meat', description: 'fine meat',price:1.5 },
+            { id: 2, title: 'fine foods meat', description: 'fine meat' ,price:1.5},
+        { id: 3, title: 'fine foods meat', description: 'fine meat' ,price:1.5}]
+
+        res.render('shop.ejs', { products ,pageTitle:'Shop'})
+
+    } catch(e){}
+})
+
 //404
 app.use('/*', (req, res) => { 
     try {
 
-        res.status(404).send("E-Commerce By Mohamed Elsayed")
+        res.render('ERROR-404.ejs',{pageTitle:'ERROR 404'})
 
     } catch(e){}
 })
