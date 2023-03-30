@@ -3,34 +3,39 @@ const Sequelize = require('sequelize')
 const sequelize = require('../util/mysql')
 
 const Product = sequelize.define('product', {
-
     id: {
         type: Sequelize.INTEGER,
         autoIncrement: true,
         allowNull: false,
         primaryKey: true 
     },
-    tittle: {
+    title: {
         type: Sequelize.STRING,
         allowNull: false,
         validate: {
-            len: [5 , 50]
+            len: [10 , 150]
         }
     },
     description :{
         type: Sequelize.STRING,
         allowNull: false,
         validate: {
-            len: [5 , 150]
+            len: [10 , 2000]
         }
     },
     price :{
         type: Sequelize.DOUBLE,
-        allowNull: false
+        allowNull: false,
+        validate: {
+            min:0.1
+        }
     },
     image_url: {
         type: Sequelize.STRING,
         allowNull: false,
+        validate: {
+            isUrl: true
+        }
     }
 })
 

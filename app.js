@@ -12,22 +12,27 @@ const shopRoutes = require('./routes/shop')
 const userRoutes = require('./routes/user')
 const bodyParser = require('body-parser')
 const app = express()
-//parser //json data limiter
-app.use(bodyParser.urlencoded({ extended: true }));
-app.use(express.static('public'));
-app.use(express.json({ limit: '1kb' }))
-app.set('view engine', 'ejs');
+//==============================================================
+app.use(bodyParser.urlencoded({ extended: true }));//parser
+app.use(express.static('public'));//serve css
+app.use(express.json({ limit: '1kb' })) //parser //json data limiter
+app.set('view engine', 'ejs');//sets template engine
+app.set('views', 'views')//optional set default views to views
+
+
 
 app.use('/admin',adminRoutes)
 app.use('/shop', shopRoutes)
 app.use('/user', userRoutes)
-app.get('/', (req, res) => { 
+app.get('/',async (req, res) => { 
     try {
-        const products = [{ id: 1, title: 'fine foods meat', description: 'fine meat',price:1.5 },
-            { id: 2, title: 'fine foods meat', description: 'fine meat' ,price:1.5},
-        { id: 3, title: 'fine foods meat', description: 'fine meat' ,price:1.5}]
+        const products = await Product.findAll()
 
-        res.render('shop.ejs', { products ,pageTitle:'Shop'})
+        res.render('shop.ejs', {
+            products,
+            pageTitle: 'Shop',
+            path:'/'
+        })
 
     } catch(e){}
 })

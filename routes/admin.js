@@ -9,9 +9,13 @@ router.get('/find-by-id/:id', auth, productsController.findByPk)
 
 router.get('/sell-product' ,productsController.getAddProduct)
 
-router.post('/sell-product' ,productsController.postAddProduct)
+router.post('/sell-product', productsController.postAddProduct)
 
-router.post('/change-price/:id', auth, productsController.changePrice)
+
+
+router.get('/edit-product/:id', auth, productsController.changePrice)
+
+router.post('/edit-product/:id', auth, productsController.changePrice)
 
 router.delete('/delete-product/:id', auth,productsController.deleteProduct)
 

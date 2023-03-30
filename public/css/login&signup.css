@@ -1,7 +1,9 @@
 .container input{
     margin-left: 20px;
-    background-color: #232F3E;
-    color:white;
+    background-color:  #232F3E;
+    background-color: #D3D3D3;
+
+    color:black;
     font-weight: 500;
     font-size:20px;
     border-radius: 10px;
@@ -12,7 +14,6 @@
 }
 .container input:focus {
     outline: none;
-    border: #D3D3D3 solid;
 }
 .container {
     user-select: none;
@@ -21,7 +22,7 @@
     border-radius: 10px;
     font-size: 18px;
     font-weight: 700;
-    color: white;
+    color: #333;
     margin: 10% 31%;
 }
 #button{
@@ -30,13 +31,22 @@
     border-radius: 50px;
     background-color:#333;
     border: none;
-    color: white;
+    color: #D3D3D3;
     padding: 15px 25px;
     padding-left: 5%;
     margin-top:25px ;
     margin-left: 37%;
     margin-bottom: 10px;
     width: 30%;
+    border: #333 solid 4px;
+}
+#signup{
+    margin-left: 20%;
+    padding-bottom: 5px;
+}
+#login{
+    margin-left: 35%;
+    padding-bottom: 5px;
 }
 #button:hover {
     color: #333;

@@ -4,7 +4,9 @@ const jwt = require('jsonwebtoken')
 
 
 exports.getSignup = async (req,res) => { 
-    res.render('signup.ejs')
+    res.render('signup.ejs', {
+        pageTitle:'E-commerce Sign Up'
+    })
 }
 exports.postSignup = async (req, res) => { 
     try { 
@@ -34,7 +36,9 @@ exports.postSignup = async (req, res) => {
     }
 }
 exports.getLogin = async (req,res) => { 
-    res.render('login.ejs')
+    res.render('login.ejs',{
+        pageTitle:'E-commerce Login'
+    })
 }
 //login
 exports.postLogin = async (req, res) => { 

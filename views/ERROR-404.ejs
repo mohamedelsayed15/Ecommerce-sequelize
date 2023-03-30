@@ -1,34 +1,12 @@
-<!DOCTYPE html>
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<%- include('includes/head.ejs') %>
 
-    <title><%=pageTitle %></title>
-    <link rel="stylesheet"  href="/css/common.css">
 </head>
     <body>
-        <nav id="navbar">
-                <ul>
-                    <li id="logo">E-commerce</li>
-                    <li><a href="/">Shop</a></li>
-                    <li><a href="">Orders</a></li>
-                    <li><a href="">Cart</a></li>
-                    <li><a href="/admin/sell-product">Sell Product</a></li>
-                    <li><a href="">About</a></li>
-                    <li><a href="">Contact</a></li>
-                </ul>
-        </nav>
-        <div style="color: white; margin-top:20%; text-align: center; user-select: none;">
-        <h1 style=" color: white;  font-size: 4em; font-family: sans-serif;">404 Error</h1>
+        <%- include('includes/nav.ejs') %>
+        <div style="color: #333; margin-top:20%; text-align: center; user-select: none;">
+        <h1 style=" color: #333;  font-size: 4em; font-family: sans-serif;">404 Error</h1>
         <p>The page you are looking for could not be found.</p>
         <p>If you have any questions or concerns, please email us at <span class="email">info@ecommerce.com</span>.</p>
         </div>
     
-    <footer id="main-footer"> 
-        <p>Copyright &copy; 2023 E-commerce</p>
-    </footer>
-</body>
-</html>
+        <%- include('includes/footer.ejs') %>

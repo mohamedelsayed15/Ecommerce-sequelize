@@ -1,43 +1,42 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<%- include('includes/head.ejs') %>
 
-    <title><%=pageTitle %></title>
-    <link rel="stylesheet"  href="/css/main.css">
     <link rel="stylesheet"  href="/css/add-product.css">
+
 </head>
     <body>
-        <nav id="navbar">
-                <ul>
-                    <li id="logo">E-commerce</li>
-                    <li><a href="/">Shop</a></li>
-                    <li><a href="">Orders</a></li>
-                    <li><a href="">Cart</a></li>
-                    <li><a href="/admin/sell-product">Sell Product</a></li>
-                    <li><a href="">About</a></li>
-                    <li><a href="">Contact</a></li>
-                </ul>
-        </nav>
+        <%- include('includes/nav.ejs') %>
+
         <div class="container">
             <form method="post"  action="/admin/sell-product">
                     <label for="">Product Name</label>
                     <br>
-                    <input type="text" name="title" id="">
+                    <input type="text" autocomplete="off" name="title" id="" required>
+                    <br>
+                    <label for="">Product Price</label>
+                    <br>
+                    <input type="number" id="price" name="price" step="0.01" required>
+                    <br>
+                    <label for="image-url">Image URL</label>
+                    <input type="text" autocomplete="off" required name="image">
                     <br>
                     <label  for="">Product Description</label>
                     <br>
-                    <textarea rows="6" id="description" name="description"></textarea>
+                    <textarea rows="6" id="description" name="description"  oninput="countCharacters()" required></textarea>
+                    <p><span id="count">0</span> characters entered</p>
+                    <script>
+                        function countCharacters() {
+                        let description = document.getElementById("description");
+                        let count = document.getElementById("count");
+                        count.innerHTML = description.value.length;
+                        }
+                    </script>
+                    
                     <button id ="button"type="submit">Add Product</button>
             </form>
         </div>
+       
+        
 
     
     </div>
-    <footer id="main-footer"> 
-        <p>Copyright &copy; 2023 E-commerce</p>
-    </footer>
-</body>
-</html>
+    <%- include('includes/footer.ejs') %>

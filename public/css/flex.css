@@ -1,0 +1,71 @@
+main {
+    padding-top: 62px; /* same as the height of navbar */
+    padding-bottom: 20px;
+}
+.flexbox-container{
+    display: flex;
+    margin: 0;
+    padding: 0;
+    margin-left: 5%;
+    margin-top: 3%;
+    justify-content: center;
+    justify-content: space-around;
+    flex-wrap: wrap;/* allow multiple lines*/
+}
+p{
+    display: inline;
+}
+
+.flexbox-item{
+    height: 450px;
+    margin-right: 5%;
+    width:25%;
+    border: #333 solid 3px;
+    border-radius: 10px;
+    color: black;
+    text-align: center;
+    font-size: 20px;
+    overflow: hidden; /* keeps the element from overflowing its parent */
+    word-wrap: break-word;/* breaks the line*/
+    flex-basis: 25%;
+    margin-bottom: 20px;
+}
+.flexbox-item:hover{
+    /*border: #D3D3D3 solid;*/
+
+}
+
+.button-container{
+    background-color: #333;
+    background-color: #f4f4f4;
+    background-color: #D3D3D3;
+
+    margin-top: 9px;
+    margin-bottom: 3px;
+}
+#add-to-cart{
+    width: 40%;
+}
+
+.button-container button{
+    text-align:center;
+    font-weight:400;
+    font-size: 16px;
+    border-radius: 15px;
+    background-color:#333;
+    border: #333 solid 3px;
+    color: white;
+    width: 30%;
+    padding-top: 5px;
+    padding-bottom: 5px;
+}
+
+.button:hover{
+    color: #333;
+    background-color: #D3D3D3 ;
+}
+.flexbox-item img{
+    border-radius: 2px;
+    width: 100%;
+    height: 250px;
+}

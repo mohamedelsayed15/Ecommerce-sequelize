@@ -1,7 +1,9 @@
 .container input{
     margin-left: 20px;
     background-color: #232F3E;
-    color:white;
+    background-color: #D3D3D3;
+
+    color:black;
     font-weight: 500;
     font-size:20px;
     border-radius: 10px;
@@ -9,13 +11,15 @@
     width: 90%;
     padding-top: 3px;
     padding-bottom: 3px;
+    margin-left: 5%;
+    margin-right: 5%;
     /* padding-right: 10px;
     padding-top: 5px;
     padding-bottom: 5px; */
 }
+
 .container input:focus {
     outline: none;
-    border: #D3D3D3 solid;
 }
 .container {
     user-select: none;
@@ -24,48 +28,59 @@
     border-radius: 10px;
     font-size: 18px;
     font-weight: 700;
-    color: white;
+    color: #333;
     margin: 10% 31%;
+    
 }
 #description{
-    scrollbar-width: thin; /* width of the scrollbar */
-    scrollbar-color: #cccccc #ffffff; /* color of the scrollbar */
-    resize: none;
-    margin-left: 20px;
+    /*scrollbar-width: thin; /* width of the scrollbar */
+    /*scrollbar-color: #333 #ffffff; /* color of the scrollbar */
     width: 90%;
     height: 30%;
     font-weight: 500;
     font-size: 20px;
     background-color: #232F3E;
-    color: white;
+    background-color: #D3D3D3;
+    width: 90%;
+    margin-left: 5%;
+    margin-right: 5%;
+    color: black;
+    resize: none;
     border-radius: 10px;
     border: #333 solid;
 }
+
 #description:focus {
     outline: none;
-    border: #D3D3D3 solid;
 }
 #description::-webkit-scrollbar {
     width: 10px;
     height: 6px;
+
 }
 
 #description::-webkit-scrollbar-track {
-    background-color: #232F3E;
+    background-color: #D3D3D3;
     border-radius: 5px;
 }
 
 #description::-webkit-scrollbar-thumb {
-    background-color: #D3D3D3;
+    background-color: #333;
     border-radius: 3px;
+    border: none;
 }
 
+#price::-webkit-inner-spin-button,
+#price::-webkit-outer-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+}
 #button{
     font-weight: 600;
     font-size: 20px;
     border-radius: 50px;
     background-color:#333;
-    border: none;
+    border: solid #333 4px;
     color: white;
     padding-top: 3%;
     padding-bottom: 3%;

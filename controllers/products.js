@@ -32,10 +32,18 @@ exports.findByPk = async (req, res) => {
 
 exports.changePrice = async (req, res) => {
     try {
+        /*
+            validation with joi
+        */
+        let value = req.body
 
         const product = await Product.findByPk(req.params.id)
 
-        if (req.user.id !== product.userId) { return res.status(403).send()}
+        if (req.user.id !== product.userId) { return res.status(403).send() }
+
+        const updates = Object.keys(value)
+
+        updates.forEach(update => product[update] = value[update])
 
         product.price = req.body.price
 
@@ -78,17 +86,26 @@ exports.postAddProduct = async (req, res) => {
         ) { return res.send("invalid") }
 
         //await req.user.createProduct()   method created by sequelize when relationships are set
-
-        const product = await req.user.createProduct({//auto save  //auto fill for id
-            tittle: req.body.tittle,
+        const product1 = await Product.create({//auto save  //auto fill for id
+            title: req.body.title,
             description:req.body.description,
             price:req.body.price,
             image_url: req.body.image
         })
 
-        res.send(product)
+        // const product = await req.user.createProduct({//auto save  //auto fill for id
+        //     title: req.body.title,
+        //     description:req.body.description,
+        //     price:req.body.price,
+        //     image_url: req.body.image
+        // })
+
+        res.redirect('/')
+
+        //res.send(product1)
 
     } catch (e) { 
+        console.log(e)
         res.send("missing information")
     }
 }
