@@ -5,18 +5,20 @@ const auth = require('../middleware/auth')
 
 router.get('/find-all',auth, productsController.getProducts)
 
-router.get('/find-by-id/:id', auth, productsController.findByPk)
+//router.get('/find-by-id/:id', auth, productsController.findByPk)
+
+router.get('/my-products',productsController.getProducts)
 
 router.get('/sell-product' ,productsController.getAddProduct)
 
 router.post('/sell-product', productsController.postAddProduct)
 
+router.get('/browse-product/:id', productsController.browseProduct)
 
+router.get('/edit-product/:id',  productsController.getEditProduct)
 
-router.get('/edit-product/:id', auth, productsController.changePrice)
+router.post('/edit-product/:id',  productsController.postEditProduct)
 
-router.post('/edit-product/:id', auth, productsController.changePrice)
-
-router.delete('/delete-product/:id', auth,productsController.deleteProduct)
+router.get('/delete-product/:id', productsController.deleteProduct)
 
 module.exports = router

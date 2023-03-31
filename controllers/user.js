@@ -11,7 +11,7 @@ exports.getSignup = async (req,res) => {
 exports.postSignup = async (req, res) => { 
     try { 
 
-        const user = await User.create({
+        let user = await User.create({
             name: req.body.name,
             email: req.body.email,
             password: req.body.password
@@ -44,7 +44,10 @@ exports.getLogin = async (req,res) => {
 exports.postLogin = async (req, res) => { 
     try {
         //fetching user
-        const user = await User.findOne({ where: { email: req.body.email } })
+        const user = await User.findOne({
+            where: {
+                email: req.body.email
+            }})
 
         if (!user) { return res.send("couldn't find user") }
 

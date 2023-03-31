@@ -6,9 +6,14 @@ const { User } = require('../models/user')
 exports.getProducts = async (req, res) => {
     try {
 
-        const products = await req.user.getProducts()
+        const products = await Product.findAll()
 
-        res.send(products)
+        //const products = await req.user.getProducts()
+
+        res.render('my-products.ejs', {
+            products,
+            pageTitle:'My Products'
+        })
 
     } catch (e) { 
         console.log(e)
@@ -16,21 +21,33 @@ exports.getProducts = async (req, res) => {
     }
 }
 
-exports.findByPk = async (req, res) => {
+exports.browseProduct = async (req, res) => {
     try {
-
         const product = await Product.findByPk(req.params.id)
 
-        if (req.user.id !== product.userId) { return res.status(403).send()}
-
-        res.send(product)
+        res.render('product-detail.ejs', {
+            pageTitle: product.title,
+            product
+        })
 
     } catch (e) { 
         res.send(e)
     }
 }
+exports.getEditProduct = async (req, res) => { 
+    try {
+        const product = await Product.findByPk(req.params.id)
 
-exports.changePrice = async (req, res) => {
+        res.render('edit-product.ejs', {
+            pageTitle: 'Edit Product',
+            product
+        })
+    } catch (e) { 
+        console.log(e)
+    }
+}
+
+exports.postEditProduct = async (req, res) => {
     try {
         /*
             validation with joi
@@ -39,17 +56,17 @@ exports.changePrice = async (req, res) => {
 
         const product = await Product.findByPk(req.params.id)
 
-        if (req.user.id !== product.userId) { return res.status(403).send() }
+        //if (req.user.id !== product.userId) { return res.status(403).send() }
 
         const updates = Object.keys(value)
 
-        updates.forEach(update => product[update] = value[update])
+        console.log(updates)
 
-        product.price = req.body.price
+        updates.forEach(update => product[update] = value[update])
 
         await product.save()
 
-        res.send(product)
+        res.redirect('/') 
     }
     catch (e) { 
         res.send(e)
@@ -61,18 +78,22 @@ exports.deleteProduct = async (req, res) => {
 
         const product = await Product.findByPk(req.params.id)
 
-        if (req.user.id !== product.userId) { return res.status(403).send()}
+        //if (req.user.id !== product.userId) { return res.status(403).send()}
 
         await product.destroy()
 
-        res.send(product)
+        res.redirect('/admin/my-products')
 
     } catch (e) { 
         res.send(e)
     }
 }
-exports.getAddProduct = async (req,res) => { 
-    res.render('sell-product.ejs', {pageTitle:'Sell Product'})
+exports.getAddProduct = async (req, res) => { 
+    try {
+        res.render('sell-product.ejs', { pageTitle: 'Sell Product' })
+    } catch (e) { 
+        console.log(e)
+    }
 }
 
 exports.postAddProduct = async (req, res) => {

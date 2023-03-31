@@ -4,9 +4,10 @@ main {
 }
 .flexbox-container{
     display: flex;
+    flex-direction: column;
     margin: 0;
     padding: 0;
-    margin-left: 5%;
+    margin-left: 18%;
     margin-top: 3%;
     justify-content: center;
     justify-content: space-around;
@@ -19,7 +20,7 @@ p{
 .flexbox-item{
     height: 450px;
     margin-right: 5%;
-    width:25%;
+    width:80%;
     border: #333 solid 3px;
     border-radius: 10px;
     color: black;

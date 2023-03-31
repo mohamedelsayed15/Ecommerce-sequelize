@@ -1,0 +1,27 @@
+.container{
+    margin-top: 10%;
+    margin-left: 25%;
+    width :50%;
+    text-align: center;
+}
+.container img{
+    border-radius: 2px;
+    width: 100%;
+    height: 250px;
+}
+.container button{
+    text-align:center;
+    font-weight:400;
+    font-size: 16px;
+    border-radius: 15px;
+    background-color:#333;
+    border: #333 solid 3px;
+    color: white;
+    width: 30%;
+    padding-top: 5px;
+    padding-bottom: 5px;
+}
+.button:hover{
+    color: #333;
+    background-color: #D3D3D3 ;
+}

@@ -13,8 +13,11 @@
                 <div class="flexbox-item">
                     <img src="<%=products[i].image_url%>" alt="description of image" />
                     <div class="button-container">
-                        <button class="button" id="add-to-cart">Delete Product</button>
-                        <button class="button">Edit Product</button>
+                        <form method="get" action="/admin/delete-product/<%= products[i].id %>" >
+                        <a href="/admin/edit-product/<%= products[i].id %>" class="button" id="edit">Edit Product</a>
+
+                        <button class="button" id="delete">Delete Product</button>
+                    </form>
                         </div>
 
                     <p class="price">$<%= products[i].price %></p>

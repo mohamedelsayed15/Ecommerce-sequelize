@@ -4,16 +4,16 @@ const shopController = require('../controllers/shop');
 const auth = require('../middleware/auth');
 const router = express.Router()
 
-router.get('/', productsController.getProducts)
 
-router.get('/cart', auth, shopController.getCart)
+router.get('/cart', shopController.getCart)
 
-router.post('/cart/add-to-cart/:id', auth, shopController.postCart)
+router.post('/cart/add-to-cart/:id' ,shopController.postCart)
 
-router.get('/order-cart',auth ,shopController.orderCart)
+router.post('/cart/delete-from-cart/:id' ,shopController.deleteProductFromCart)
 
-router.get('/get-orders',auth ,shopController.getOrders)
+router.get('/order-cart',shopController.orderCart)
 
-router.delete('/cart/:id',auth ,shopController.deleteProductFromCart)
+router.get('/get-orders',shopController.getOrders)
+
 
 module.exports = router

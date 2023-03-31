@@ -1,6 +1,6 @@
 <%- include('includes/head.ejs') %>
 
-    <link rel="stylesheet"  href="/css/flex.css">
+    <link rel="stylesheet"  href="/css/cart-flex.css">
 </head>
 
     <body>
@@ -12,6 +12,7 @@
 
                 <div class="flexbox-item">
                     <img src="<%=products[i].image_url%>" alt="description of image" />
+                    <p><%= products[i].title %></p>
                     <div class="button-container">
                         <form action="/shop/cart/add-to-cart/<%= products[i].id %>" method="post">
                         <button class="button" id="add-to-cart">Add to Cart</button>
