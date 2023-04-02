@@ -7,7 +7,9 @@ const router = express.Router()
 
 router.get('/cart', shopController.getCart)
 
-router.post('/cart/add-to-cart/:id' ,shopController.postCart)
+router.post('/cart/add-to-cart/:id', shopController.postCart)
+
+router.post('/cart/minus-cart-item/:id' ,shopController.minusCartItem)
 
 router.post('/cart/delete-from-cart/:id' ,shopController.deleteProductFromCart)
 

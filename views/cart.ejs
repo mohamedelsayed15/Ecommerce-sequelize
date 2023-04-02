@@ -8,19 +8,31 @@
 
         <main>
             <div class="flexbox-container">
+                <h1 style = "margin-left: 22%;">Subtotal (<%= products.length %> items): $<%= subtotal %></h1>
                 <% for(let i=0; i< products.length ;i++){ %>
 
                 <div class="flexbox-item">
-                    <img src="<%=products[i].image_url%>" alt="description of image" />
+                    <img src="<%=products[i].image_url %>" alt="description of image" />
                     <p><%= products[i].title %></p>
                     <div class="button-container">
                         <form action="/shop/cart/add-to-cart/<%= products[i].id %>" method="post">
-                        <button class="button" id="add-to-cart">Add to Cart</button>
-                        <a class="button" href="/admin/browse-product/<%= products[i].id %>">Browse</a>
-                        </form>
-                        </div>
+                            <button class="button" id="increment-product-cart" >+</button>
+                        </form> 
 
-                    <p class="price">$<%= products[i].price %></p>
+                        <form action="/shop/cart/minus-cart-item/<%= products[i].id %>" method="post">
+                            <button class="button" id="increment-product-cart" >-</button>
+                        </form>    
+
+                        <form action="/shop/cart/delete-from-cart/<%= products[i].id %>" method="post">
+                            <button class="button" id="delete-from-cart">Delete From Cart </button>
+                        </form>
+                        
+                    </div>
+
+                    <p class="price">Quantity:<%= products[i].quantity%> 
+                        &nbsp;&nbsp;&nbsp;
+                        &nbsp;&nbsp;&nbsp;
+                        $<%= products[i].price %> a piece</p>
                     <br>
                     
                     <p><%= products[i].title %></p>

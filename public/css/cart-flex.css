@@ -16,7 +16,9 @@ main {
 p{
     display: inline;
 }
-
+form{
+    display: inline;
+}
 .flexbox-item{
     height: 450px;
     margin-right: 5%;
@@ -30,6 +32,7 @@ p{
     word-wrap: break-word;/* breaks the line*/
     flex-basis: 25%;
     margin-bottom: 20px;
+    
 }
 .flexbox-item:hover{
     /*border: #D3D3D3 solid;*/
@@ -44,8 +47,8 @@ p{
     margin-top: 9px;
     margin-bottom: 3px;
 }
-#add-to-cart{
-    width: 40%;
+#delete-from-cart{
+    width: 30%;
 }
 #delete{
     width: 45%;

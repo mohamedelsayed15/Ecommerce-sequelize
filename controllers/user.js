@@ -17,13 +17,16 @@ exports.postSignup = async (req, res) => {
             password: req.body.password
         })
 
-        await user.save()
-
         const token = await jwt.sign({ id: user.id }, process.env.JWT)
 
-        await user.createToken({ token })
+        await Promise.all([
+            user.createToken({ token }),
+            user.createCart()
+        ])
 
-        await user.createCart()
+        // await user.createToken({ token })
+
+        // await user.createCart()
 
         user.password = ''
 
@@ -43,6 +46,7 @@ exports.getLogin = async (req,res) => {
 //login
 exports.postLogin = async (req, res) => { 
     try {
+
         //fetching user
         const user = await User.findOne({
             where: {
@@ -59,13 +63,13 @@ exports.postLogin = async (req, res) => {
 
         //generating jwt token
 
-        const token = await jwt.sign({ id: user.id}, process.env.JWT)
+        const token = await jwt.sign({ id: user.id }, process.env.JWT)
 
         await user.createToken({ token })
 
         user.password = ''
 
-        res.send({user,token})
+        res.send({ user, token})
 
     } catch (e) { 
         console.log(e)
