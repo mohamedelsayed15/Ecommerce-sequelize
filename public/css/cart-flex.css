@@ -43,12 +43,14 @@ form{
     background-color: #333;
     background-color: #f4f4f4;
     background-color: #D3D3D3;
+    background-color: #FFFFFF;
 
     margin-top: 9px;
     margin-bottom: 3px;
 }
 #delete-from-cart{
     width: 30%;
+
 }
 #delete{
     width: 45%;
@@ -82,11 +84,16 @@ form{
 }
 .a:hover{
     color: #333;
+    background-color: #FFFFFF;
     background-color: #D3D3D3 ;
+    border-color: #D3D3D3;
 }
 .button:hover{
     color: #333;
+    background-color: #FFFFFF;
     background-color: #D3D3D3 ;
+    border-color: #D3D3D3;
+
 }
 .flexbox-item img{
     border-radius: 2px;

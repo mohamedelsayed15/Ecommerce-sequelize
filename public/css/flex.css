@@ -2,6 +2,7 @@ main {
     padding-top: 62px; /* same as the height of navbar */
     padding-bottom: 20px;
 }
+
 .flexbox-container{
     display: flex;
     margin: 0;
@@ -12,6 +13,7 @@ main {
     justify-content: space-around;
     flex-wrap: wrap;/* allow multiple lines*/
 }
+
 p{
     display: inline;
 }
@@ -20,8 +22,8 @@ p{
     height: 450px;
     margin-right: 5%;
     width:25%;
-    border: #333 solid 3px;
-    border-radius: 10px;
+    /*border: #333 solid 3px;*/
+    /*border-radius: 5px;*/
     color: black;
     text-align: center;
     font-size: 20px;
@@ -29,45 +31,47 @@ p{
     word-wrap: break-word;/* breaks the line*/
     flex-basis: 25%;
     margin-bottom: 20px;
-}
-.flexbox-item:hover{
-    /*border: #D3D3D3 solid;*/
-
+    box-shadow: 0px 0px 5px 2px rgba(0, 0, 0, 0.5)
 }
 
 .button-container{
     background-color: #333;
     background-color: #f4f4f4;
     background-color: #D3D3D3;
-
+    background-color: #FFFFFF;
     margin-top: 9px;
     margin-bottom: 3px;
 }
+
 #add-to-cart{
     width: 40%;
 }
+
 #delete{
     width: 45%;
 }
+
 .button-container button{
     text-align:center;
     font-weight:400;
     font-size: 16px;
     border-radius: 15px;
     background-color:#333;
-    border: #333 solid 3px;
+    background-color: black;
+    border: none;
+    /*border: #333 solid 3px;*/
     color: white;
     width: 30%;
     padding-top: 5px;
     padding-bottom: 5px;
 }
+
 .button-container a{
     text-align:center;
     font-weight:400;
     font-size: 16px;
     border-radius: 15px;
-    background-color:#333;
-    border: #333 solid 3px;
+    background-color:black;
     color: white;
     width: 30%;
     padding-top: 5px;
@@ -76,14 +80,20 @@ p{
     padding-right: 10px;
     text-decoration: none;
 }
+
 .a:hover{
     color: #333;
     background-color: #D3D3D3 ;
+    background-color: #FFFFFF;
 }
+
 .button:hover{
     color: #333;
+    background-color: #FFFFFF;
     background-color: #D3D3D3 ;
+    border-color: #D3D3D3;
 }
+
 .flexbox-item img{
     border-radius: 2px;
     width: 100%;

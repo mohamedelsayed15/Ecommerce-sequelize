@@ -6,7 +6,8 @@ const sequelize = new Sequelize(
     'me',
     '621654', {
         dialect: 'mysql',
-        host :'127.0.0.1'
+        host :'127.0.0.1',
+        storage: "./session.mysql",
     }
 )
 

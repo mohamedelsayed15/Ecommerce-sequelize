@@ -15,7 +15,7 @@
                     <div class="button-container">
                         <form action="/shop/cart/add-to-cart/<%= products[i].id %>" method="post">
                         <button class="button" id="add-to-cart">Add to Cart</button>
-                        <a class="button" href="/admin/browse-product/<%= products[i].id %>">Browse</a>
+                        <a class="button" href="/shop/browse-product/<%= products[i].id %>">Browse</a>
                         </form>
                         </div>
 
@@ -23,7 +23,9 @@
                     <br>
                     
                     <p><%= products[i].title %></p>
-                    
+                    <% if(products[i].title.length > 150){%>
+                    <a href="#">...</a>
+                    <%}%>
                     
                 </div>
                 <% }%>

@@ -1,13 +1,26 @@
 <nav id="navbar">
     <ul>
-        <li id="logo">E-commerce</li>
-        <li><a href="/">Shop</a></li>
-        <li><a href="">Orders</a></li>
-        <li><a href="/shop/cart">Cart</a></li>
-        <li><a href="/admin/sell-product">Sell Product</a></li>
-        <li><a href="/admin/my-products">My Products</a></li>
-        <li><a href="">About & Contact</a></li>
-        <li><a href="/user/login-user">Hello, login</a></li>
-
+        <li id="logo" >E-commerce</li>
+        <li class="li1"><a href="/">Shop</a></li>
+        <%if(isAuthenticated ){ %>
+            <li class="li1"><a href="">Orders</a></li>
+            <li class="li1"><a href="/shop/cart">Cart</a></li>
+            <!-- <% //if (isAuthenticated === true){%> -->
+            <li class="li1"><a href="/admin/sell-product">Sell Product</a></li>
+            <li class="li1"><a href="/admin/my-products">My Products</a></li>
+            <!-- <%//}%> -->
+        <%} %>
+        <li class="li1"><a href="">About & Contact</a></li>
+        <%if(!isAuthenticated ){ %>
+            <li class="li1"><a href="/user/login-user">Hello, login</a></li>
+            <%} else {%>
+                <li class="li1" >
+                        <!-- <form action="/user/logout-user" method="post"> -->
+                            <a href="/user/logout-user"  type="submit">
+                                Hello, logout
+                            </a>
+                        <!-- </form> -->
+                    </li>
+        <%}%>
     </ul>
 </nav>

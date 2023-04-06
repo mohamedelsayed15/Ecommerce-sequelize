@@ -7,18 +7,16 @@ router.get('/find-all',auth, productsController.getProducts)
 
 //router.get('/find-by-id/:id', auth, productsController.findByPk)
 
-router.get('/my-products',productsController.getProducts)
+router.get('/my-products',auth,productsController.getProducts)
 
-router.get('/sell-product' ,productsController.getAddProduct)
+router.get('/sell-product',auth,productsController.getAddProduct)
 
-router.post('/sell-product', productsController.postAddProduct)
+router.post('/sell-product',auth, productsController.postAddProduct)
 
-router.get('/browse-product/:id', productsController.browseProduct)
+router.get('/edit-product/:id', auth, productsController.getEditProduct)
 
-router.get('/edit-product/:id',  productsController.getEditProduct)
+router.post('/edit-product/:id',auth,  productsController.postEditProduct)
 
-router.post('/edit-product/:id',  productsController.postEditProduct)
-
-router.get('/delete-product/:id', productsController.deleteProduct)
+router.get('/delete-product/:id',auth, productsController.deleteProduct)
 
 module.exports = router

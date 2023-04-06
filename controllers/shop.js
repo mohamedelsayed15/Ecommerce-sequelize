@@ -43,6 +43,7 @@ exports.getCart = async (req, res) => {
             pageTitle: 'Cart',
             products: cartProducts,
             subtotal,
+            isAuthenticated:req.session.isLoggedIn
         })
 
     } catch (e) { 
@@ -186,7 +187,7 @@ exports.orderCart = async (req, res) => {
     }
 }
 exports.getOrders = async (req, res) => {
-    try {req.user = await User.findOne({ where: {email:'mo.elsayed621654@gmail.com' } })
+    try {
 
         const orders = await req.user.getOrders({ include: 'products' })
 

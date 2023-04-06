@@ -2,10 +2,10 @@ const { User } = require('../models/user')
 const bcrypt = require('bcryptjs')
 const jwt = require('jsonwebtoken')
 
-
 exports.getSignup = async (req,res) => { 
     res.render('signup.ejs', {
-        pageTitle:'E-commerce Sign Up'
+        pageTitle: 'E-commerce Sign Up',
+        isAuthenticated:req.session.isLoggedIn
     })
 }
 exports.postSignup = async (req, res) => { 
@@ -17,11 +17,13 @@ exports.postSignup = async (req, res) => {
             password: req.body.password
         })
 
-        const token = await jwt.sign({ id: user.id }, process.env.JWT)
+        const token = jwt.sign({ id: user.id }, process.env.JWT)
 
-        await Promise.all([
+            await Promise.race([
+            token,
             user.createToken({ token }),
             user.createCart()
+
         ])
 
         // await user.createToken({ token })
@@ -30,7 +32,18 @@ exports.postSignup = async (req, res) => {
 
         user.password = ''
 
-        res.status(201).send({user , token})
+        req.session.isLoggedIn = true
+
+        req.session.user = user
+
+        await req.session.save()
+
+        setTimeout(() => {
+            res.redirect('/')
+        },1000)
+        
+
+        //res.status(201).send({user , token})
 
     } catch (e) { 
         console.log(e)
@@ -38,9 +51,12 @@ exports.postSignup = async (req, res) => {
         res.send(e)
     }
 }
-exports.getLogin = async (req,res) => { 
+
+exports.getLogin = async (req, res) => { 
+
     res.render('login.ejs',{
-        pageTitle:'E-commerce Login'
+        pageTitle: 'E-commerce Login',
+        isAuthenticated:req.session.isLoggedIn
     })
 }
 //login
@@ -63,17 +79,46 @@ exports.postLogin = async (req, res) => {
 
         //generating jwt token
 
-        const token = await jwt.sign({ id: user.id }, process.env.JWT)
+        const tokenPromise =  jwt.sign({ id: user.id }, process.env.JWT)
 
-        await user.createToken({ token })
+        const userTokenPromise =  user.createToken({ token:tokenPromise })
+
+        await Promise.all([
+            tokenPromise,
+            userTokenPromise
+        ])
 
         user.password = ''
 
-        res.send({ user, token})
+        //res.setHeader('Set-Cookie','loggedIn=true; Max-Age=432000; path=/; httpOnly;')//5 days
+
+        req.session.isLoggedIn = true
+
+        req.session.user = user
+
+        await req.session.save()
+
+        setTimeout(() => {
+            res.redirect('/')
+        },1000)
+        
 
     } catch (e) { 
         console.log(e)
         res.send(e)
+    }
+}
+exports.postLogout = async (req, res) => {
+    try {
+
+        await req.session.destroy()
+
+        setTimeout(() => {
+            res.redirect('/')
+        },1000)
+
+    } catch (e) {
+        console.log(e)
     }
 }
 

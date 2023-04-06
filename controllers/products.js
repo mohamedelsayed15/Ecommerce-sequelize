@@ -6,13 +6,13 @@ const { User } = require('../models/user')
 exports.getProducts = async (req, res) => {
     try {
 
-        const products = await Product.findAll()
-
-        //const products = await req.user.getProducts()
+        const products = await req.user.getProducts()
 
         res.render('my-products.ejs', {
             products,
-            pageTitle:'My Products'
+            pageTitle: 'My Products',
+            isAuthenticated:req.session.isLoggedIn,
+            user:req.user
         })
 
     } catch (e) { 
@@ -27,20 +27,29 @@ exports.browseProduct = async (req, res) => {
 
         res.render('product-detail.ejs', {
             pageTitle: product.title,
-            product
+            product,
+            isAuthenticated:req.session.isLoggedIn
         })
 
     } catch (e) { 
         res.send(e)
     }
 }
+
 exports.getEditProduct = async (req, res) => { 
     try {
-        const product = await Product.findByPk(req.params.id)
+
+        const product = await req.user.getProducts({ where: { id: req.params.id } })
+
+        if (product.length < 1) { 
+            res.redirect('/404')
+        }
 
         res.render('edit-product.ejs', {
             pageTitle: 'Edit Product',
-            product
+            product:product[0],
+            isAuthenticated:req.session.isLoggedIn,
+            user:req.user
         })
     } catch (e) { 
         console.log(e)
@@ -56,7 +65,7 @@ exports.postEditProduct = async (req, res) => {
 
         const product = await Product.findByPk(req.params.id)
 
-        //if (req.user.id !== product.userId) { return res.status(403).send() }
+        if (req.user.id !== product.userId) { return res.status(403).send() }
 
         const updates = Object.keys(value)
 
@@ -90,7 +99,11 @@ exports.deleteProduct = async (req, res) => {
 }
 exports.getAddProduct = async (req, res) => { 
     try {
-        res.render('sell-product.ejs', { pageTitle: 'Sell Product' })
+        res.render('sell-product.ejs',{
+            pageTitle: 'Sell Product',
+            isAuthenticated:req.session.isLoggedIn,
+            user:req.user
+            })
     } catch (e) { 
         console.log(e)
     }
@@ -98,28 +111,18 @@ exports.getAddProduct = async (req, res) => {
 
 exports.postAddProduct = async (req, res) => {
     try {
-        console.log(req.params.title)
-        console.log(req.body)
         if (!req.body.title ||
             !req.body.description ||
             !req.body.price ||
             !req.body.image
         ) { return res.send("invalid") }
 
-        //await req.user.createProduct()   method created by sequelize when relationships are set
-        const product1 = await Product.create({//auto save  //auto fill for id
+        const product = await req.user.createProduct({//auto save  //auto fill for id
             title: req.body.title,
             description:req.body.description,
             price:req.body.price,
             image_url: req.body.image
         })
-
-        // const product = await req.user.createProduct({//auto save  //auto fill for id
-        //     title: req.body.title,
-        //     description:req.body.description,
-        //     price:req.body.price,
-        //     image_url: req.body.image
-        // })
 
         res.redirect('/')
 
