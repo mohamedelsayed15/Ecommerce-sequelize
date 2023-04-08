@@ -13,9 +13,9 @@
                 <div class="flexbox-item">
                     <img src="<%=products[i].image_url%>" alt="description of image" />
                     <div class="button-container">
-                        <form method="get" action="/admin/delete-product/<%= products[i].id %>" >
+                        <form method="post" action="/admin/delete-product/<%= products[i].id %>" >
                         <a href="/admin/edit-product/<%= products[i].id %>" class="button" id="edit">Edit Product</a>
-
+                        <input type="hidden" name="_csrf" value="<%= csrfToken %>">
                         <button class="button" id="delete">Delete Product</button>
                     </form>
                         </div>

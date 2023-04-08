@@ -34,7 +34,8 @@ exports.getCart = async (req, res) => {
                 image_url :product.image_url,
                 title : product.title,
                 price: product.price,
-                quantity : product.cartItem.quantity
+                quantity : product.cartItem.quantity,
+                csrfToken: req.csrfToken()
             }
         })
         //console.log(cartProducts)
@@ -43,7 +44,8 @@ exports.getCart = async (req, res) => {
             pageTitle: 'Cart',
             products: cartProducts,
             subtotal,
-            isAuthenticated:req.session.isLoggedIn
+            isAuthenticated:req.session.isLoggedIn,
+            csrfToken: req.csrfToken()
         })
 
     } catch (e) { 

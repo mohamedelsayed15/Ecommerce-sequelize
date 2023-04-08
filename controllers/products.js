@@ -11,7 +11,6 @@ exports.getProducts = async (req, res) => {
         res.render('my-products.ejs', {
             products,
             pageTitle: 'My Products',
-            isAuthenticated:req.session.isLoggedIn,
             user:req.user
         })
 
@@ -27,8 +26,7 @@ exports.browseProduct = async (req, res) => {
 
         res.render('product-detail.ejs', {
             pageTitle: product.title,
-            product,
-            isAuthenticated:req.session.isLoggedIn
+            product
         })
 
     } catch (e) { 
@@ -48,7 +46,6 @@ exports.getEditProduct = async (req, res) => {
         res.render('edit-product.ejs', {
             pageTitle: 'Edit Product',
             product:product[0],
-            isAuthenticated:req.session.isLoggedIn,
             user:req.user
         })
     } catch (e) { 
@@ -101,7 +98,6 @@ exports.getAddProduct = async (req, res) => {
     try {
         res.render('sell-product.ejs',{
             pageTitle: 'Sell Product',
-            isAuthenticated:req.session.isLoggedIn,
             user:req.user
             })
     } catch (e) { 

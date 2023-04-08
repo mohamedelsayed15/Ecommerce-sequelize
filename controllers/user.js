@@ -2,15 +2,28 @@ const { User } = require('../models/user')
 const bcrypt = require('bcryptjs')
 const jwt = require('jsonwebtoken')
 
-exports.getSignup = async (req,res) => { 
+exports.getSignup = async (req, res) => { 
+    let message = req.flash('signup')
+
+        console.log(message)
+
+        if (message.length > 0) {
+            message = message[0]
+        } else {
+            message = null;
+        }
     res.render('signup.ejs', {
         pageTitle: 'E-commerce Sign Up',
-        isAuthenticated:req.session.isLoggedIn
+        errorMessage: message
     })
 }
 exports.postSignup = async (req, res) => { 
     try { 
-
+        const findUser = await User.findOne({ email: req.body.email })
+        if (findUser) {
+            req.flash('signup', `user with this email already exists`)
+            return res.redirect('/user/create-user')
+        }
         let user = await User.create({
             name: req.body.name,
             email: req.body.email,
@@ -54,10 +67,21 @@ exports.postSignup = async (req, res) => {
 
 exports.getLogin = async (req, res) => { 
 
-    res.render('login.ejs',{
-        pageTitle: 'E-commerce Login',
-        isAuthenticated:req.session.isLoggedIn
-    })
+        let message = req.flash('login')
+
+        console.log(message)
+
+        if (message.length > 0) {
+            message = message[0]
+        } else {
+            message = null;
+        }
+        
+            res.render('login.ejs', {
+                pageTitle: 'E-commerce Login',
+                errorMessage: message
+            })
+
 }
 //login
 exports.postLogin = async (req, res) => { 
@@ -69,24 +93,30 @@ exports.postLogin = async (req, res) => {
                 email: req.body.email
             }})
 
-        if (!user) { return res.send("couldn't find user") }
+        if (!user) {
+            req.flash('login',`couldn't find user`)
+            return res.redirect('/user/login-user')
+        }
 
         //compare hashed password
 
         const compared = await bcrypt.compare(req.body.password, user.password)
 
-        if (compared === false) { return res.send("couldn't find user") }
+        if (compared === false) {
+            req.flash('login', `couldn't find user`)
+            return res.redirect('/user/login-user')
+        }
 
         //generating jwt token
 
-        const tokenPromise =  jwt.sign({ id: user.id }, process.env.JWT)
+        // const tokenPromise =  jwt.sign({ id: user.id }, process.env.JWT)
 
-        const userTokenPromise =  user.createToken({ token:tokenPromise })
+        // const userTokenPromise =  user.createToken({ token:tokenPromise })
 
-        await Promise.all([
-            tokenPromise,
-            userTokenPromise
-        ])
+        // await Promise.all([
+        //     tokenPromise,
+        //     userTokenPromise
+        // ])
 
         user.password = ''
 

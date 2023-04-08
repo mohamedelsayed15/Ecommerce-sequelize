@@ -3,6 +3,8 @@ const express = require('express')
 const session = require('express-session')
 const bodyParser = require('body-parser')
 const SequelizeStore = require("connect-session-sequelize")(session.Store);
+const csrf = require('csurf')
+const flash = require('connect-flash')
 //================= DataBase linking =================
 const sequelize = require('./util/mysql')
 //============= Require for Relations ================
@@ -19,13 +21,18 @@ const shopRoutes = require('./routes/shop')
 const userRoutes = require('./routes/user')
 //====================================================
 const app = express()
-app.use(bodyParser.urlencoded({ extended: true }));//parser
-app.use(express.static('public'));//serve css
-app.use(express.json({ limit: '1kb' })) //parser //json data limiter
-app.set('view engine', 'ejs');//sets template engine
-app.set('views', 'views')//optional set default views to views
-
-
+const csrfProtection = csrf()
+//parser
+app.use(bodyParser.urlencoded({ extended: true }))
+//serve css
+app.use(express.static('public'))
+//parser //json data limiter
+app.use(express.json({ limit: '1kb' })) 
+//sets template engine
+app.set('view engine', 'ejs')
+//optional set default views to views
+app.set('views', 'views')
+//session
 app.use(
     session({
         secret: "secret123",
@@ -38,8 +45,15 @@ app.use(
         saveUninitialized: false,
 
     })
-    );
+)
+app.use(csrfProtection)
+app.use(flash())
 //==================== Routes ======================
+app.use((req, res, next) => {
+    res.locals.isAuthenticated = req.session.isLoggedIn
+    res.locals.csrfToken = req.csrfToken()
+    next()
+})
 app.use('/admin',adminRoutes)
 app.use('/shop', shopRoutes)
 app.use('/user', userRoutes)
@@ -51,8 +65,7 @@ app.get('/',async (req, res) => {
         res.render('shop.ejs', {
             products,
             pageTitle: 'Shop',
-            path: '/',
-            isAuthenticated:req.session.isLoggedIn
+            path: '/'
         })
 
     } catch(e){}
@@ -62,8 +75,7 @@ app.use('/*', (req, res) => {
     try {
 
         res.render('ERROR-404.ejs', {
-            pageTitle: 'ERROR 404',
-            isAuthenticated:req.session.isLoggedIn
+            pageTitle: 'ERROR 404'
         })
 
     } catch(e){}

@@ -16,14 +16,18 @@
                     <p><%= products[i].title %></p>
                     <div class="button-container">
                         <form action="/shop/cart/add-to-cart/<%= products[i].id %>" method="post">
+                            <input type="hidden" name="_csrf" value="<%= csrfToken %>">
                             <button class="button" id="increment-product-cart" >+</button>
                         </form> 
 
                         <form action="/shop/cart/minus-cart-item/<%= products[i].id %>" method="post">
+                            <input type="hidden" name="_csrf" value="<%= csrfToken %>">
                             <button class="button" id="increment-product-cart" >-</button>
+
                         </form>    
 
                         <form action="/shop/cart/delete-from-cart/<%= products[i].id %>" method="post">
+                            <input type="hidden" name="_csrf" value="<%= csrfToken %>">
                             <button class="button" id="delete-from-cart">Delete From Cart </button>
                         </form>
                         

@@ -23,9 +23,12 @@
                 <br>
                 <input type="password" name="confirmPassword" id="password" required>
                 <br>
+                <input type="hidden" name="_csrf" value="<%= csrfToken %>">
                 <input id="button" type="submit" value="SIGN UP">
                 <div id="signup">Already have an account ? <a href="/user/create-user">Sign In</a></div>
-
         </form>
+        <% if(errorMessage){ %>
+            <div id ="error"> <%= errorMessage %></div>
+            <% } %>
     </div>
     <%- include('includes/footer.ejs') %>

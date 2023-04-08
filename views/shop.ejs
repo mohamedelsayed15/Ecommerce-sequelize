@@ -15,6 +15,7 @@
                     <div class="button-container">
                         <form action="/shop/cart/add-to-cart/<%= products[i].id %>" method="post">
                         <button class="button" id="add-to-cart">Add to Cart</button>
+                        <input type="hidden" name="_csrf" value="<%= csrfToken %>">
                         <a class="button" href="/shop/browse-product/<%= products[i].id %>">Browse</a>
                         </form>
                         </div>
@@ -31,5 +32,4 @@
                 <% }%>
             </div>
         </main>
-
         <%- include('includes/footer.ejs') %>
