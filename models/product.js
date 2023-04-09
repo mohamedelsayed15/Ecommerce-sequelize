@@ -13,15 +13,15 @@ const Product = sequelize.define('product', {
         type: Sequelize.STRING,
         allowNull: false,
         validate: {
-            len: [10 , 150]
+            len: [10 , 200]
         }
     },
     description :{
-        type: Sequelize.STRING,
+        type: Sequelize.TEXT('medium'),
         allowNull: false,
-        validate: {
-            len: [10 , 2000]
-        }
+        // validate: {
+        //     len: [50 , 1500]
+        // }
     },
     price :{
         type: Sequelize.DOUBLE,

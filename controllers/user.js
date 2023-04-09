@@ -1,9 +1,11 @@
 const { User } = require('../models/user')
 const bcrypt = require('bcryptjs')
 const jwt = require('jsonwebtoken')
+const { welcomeEmail } = require('../email/sg')
 
 exports.getSignup = async (req, res) => { 
-    let message = req.flash('signup')
+    try {
+        let message = req.flash('signup')
 
         console.log(message)
 
@@ -12,14 +14,18 @@ exports.getSignup = async (req, res) => {
         } else {
             message = null;
         }
-    res.render('signup.ejs', {
-        pageTitle: 'E-commerce Sign Up',
-        errorMessage: message
-    })
+        res.render('signup.ejs', {
+            pageTitle: 'E-commerce Sign Up',
+            errorMessage: message
+        })
+    } catch (e) { 
+        console.log(e)
+    }
 }
 exports.postSignup = async (req, res) => { 
     try { 
-        const findUser = await User.findOne({ email: req.body.email })
+        const findUser = await User.findOne({ where: { email: req.body.email } })
+
         if (findUser) {
             req.flash('signup', `user with this email already exists`)
             return res.redirect('/user/create-user')
@@ -51,6 +57,8 @@ exports.postSignup = async (req, res) => {
 
         await req.session.save()
 
+        welcomeEmail(user.email,user.name)
+
         setTimeout(() => {
             res.redirect('/')
         },1000)
@@ -65,8 +73,8 @@ exports.postSignup = async (req, res) => {
     }
 }
 
-exports.getLogin = async (req, res) => { 
-
+exports.getLogin = async (req, res) => {
+    try {
         let message = req.flash('login')
 
         console.log(message)
@@ -77,11 +85,13 @@ exports.getLogin = async (req, res) => {
             message = null;
         }
         
-            res.render('login.ejs', {
-                pageTitle: 'E-commerce Login',
-                errorMessage: message
-            })
-
+        res.render('login.ejs', {
+            pageTitle: 'E-commerce Login',
+            errorMessage: message
+        })
+    } catch (e) {
+        console.log(e)
+    }
 }
 //login
 exports.postLogin = async (req, res) => { 
