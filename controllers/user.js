@@ -36,35 +36,22 @@ exports.postSignup = async (req, res) => {
             password: req.body.password
         })
 
-        const token = jwt.sign({ id: user.id }, process.env.JWT)
-
-            await Promise.race([
-            token,
-            user.createToken({ token }),
-            user.createCart()
-
-        ])
-
-        // await user.createToken({ token })
-
-        // await user.createCart()
-
         user.password = ''
 
         req.session.isLoggedIn = true
 
         req.session.user = user
 
-        await req.session.save()
+        await Promise.all([
+            user.createCart(),
+            req.session.save()
+        ])
 
         welcomeEmail(user.email,user.name)
 
         setTimeout(() => {
             res.redirect('/')
         },1000)
-        
-
-        //res.status(201).send({user , token})
 
     } catch (e) { 
         console.log(e)
