@@ -1,27 +1,26 @@
-<%- include('includes/head.ejs') %>
+<%- include('../includes/head.ejs') %>
 
     <link rel="stylesheet"  href="/css/add-product.css">
 
 </head>
     <body>
-        <%- include('includes/nav.ejs') %>
-
+        <%- include('../includes/nav.ejs') %>
         <div class="container">
-            <form method="post"  action="/admin/sell-product">
+            <form method="post"  action="/admin/edit-product/<%= product.id %>">
                     <label for="">Product Name</label>
                     <br>
-                    <input type="text" autocomplete="off" name="title" id="" required>
+                    <input value="<%= product.title %>" type="text" autocomplete="off" name="title" id="" required>
                     <br>
                     <label for="">Product Price</label>
                     <br>
-                    <input type="number" id="price" name="price" step="0.01" required>
+                    <input value="<%= product.price %>" type="number" id="price" name="price" step="0.01" required>
                     <br>
-                    <label for="image-url">Image URL</label>
-                    <input type="text" autocomplete="off" required name="image">
+                    <label for="">Image URL</label>
+                    <input value="<%= product.image_url %>" type="text" autocomplete="off" required name="image_url">
                     <br>
                     <label  for="">Product Description</label>
                     <br>
-                    <textarea rows="6" id="description" name="description"  oninput="countCharacters()" required></textarea>
+                    <textarea rows="6" id="description" name="description"  oninput="countCharacters()" required><%= product.description %></textarea>
                     <p><span id="count">0</span> characters entered</p>
                     <script>
                         function countCharacters() {
@@ -31,8 +30,8 @@
                         }
                     </script>
                     <input type="hidden" name="_csrf" value="<%= csrfToken %>">
-                    <button id ="button"type="submit">Add Product</button>
+                    <button id ="button"type="submit">Edit Product</button>
             </form>
-        </div> 
+        </div>
     </div>
-    <%- include('includes/footer.ejs') %>
+    <%- include('../includes/footer.ejs') %>

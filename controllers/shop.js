@@ -2,8 +2,6 @@ const Product = require('../models/product')
 const { Order, OrderItem } = require('../models/order')
 const { User } = require('../models/user')
 
-
-
 //========================================================
 
 exports.getCart = async (req, res) => { 
@@ -40,7 +38,7 @@ exports.getCart = async (req, res) => {
         })
         //console.log(cartProducts)
 
-        res.render('cart.ejs', {
+        res.render('shop/cart.ejs', {
             pageTitle: 'Cart',
             products: cartProducts,
             subtotal,

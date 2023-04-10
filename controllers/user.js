@@ -14,7 +14,7 @@ exports.getSignup = async (req, res) => {
         } else {
             message = null;
         }
-        res.render('signup.ejs', {
+        res.render('user/signup.ejs', {
             pageTitle: 'E-commerce Sign Up',
             errorMessage: message
         })
@@ -72,7 +72,7 @@ exports.getLogin = async (req, res) => {
             message = null;
         }
         
-        res.render('login.ejs', {
+        res.render('user/login.ejs', {
             pageTitle: 'E-commerce Login',
             errorMessage: message
         })
@@ -84,7 +84,7 @@ exports.getLogin = async (req, res) => {
 exports.postLogin = async (req, res) => { 
     try {
 
-        //fetching user
+        // fetching user
         const user = await User.findOne({
             where: {
                 email: req.body.email
@@ -103,17 +103,6 @@ exports.postLogin = async (req, res) => {
             req.flash('login', `couldn't find user`)
             return res.redirect('/user/login-user')
         }
-
-        //generating jwt token
-
-        // const tokenPromise =  jwt.sign({ id: user.id }, process.env.JWT)
-
-        // const userTokenPromise =  user.createToken({ token:tokenPromise })
-
-        // await Promise.all([
-        //     tokenPromise,
-        //     userTokenPromise
-        // ])
 
         user.password = ''
 
@@ -135,6 +124,38 @@ exports.postLogin = async (req, res) => {
         res.send(e)
     }
 }
+
+
+exports.getForgotPassword = async (req, res) => {
+    try {
+        let message = req.flash('login')
+
+        console.log(message)
+
+        if (message.length > 0) {
+            message = message[0]
+        } else {
+            message = null;
+        }
+        
+        res.render('user/reset-password.ejs', {
+            pageTitle: 'Trader Login',
+            errorMessage: message
+        })
+    } catch (e) {
+        console.log(e)
+    }
+}
+//login
+exports.postForgotPassword = async (req, res) => { 
+    try {
+
+    } catch (e) { 
+        console.log(e)
+        res.send(e)
+    }
+}
+
 exports.postLogout = async (req, res) => {
     try {
 

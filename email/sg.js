@@ -1,4 +1,3 @@
-//const sgMail = require('@sendgrid/mail')
 const nodemailer = require('nodemailer')
 const sendgridTransport = require('nodemailer-sendgrid-transport')
 

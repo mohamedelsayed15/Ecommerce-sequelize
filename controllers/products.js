@@ -8,7 +8,7 @@ exports.getProducts = async (req, res) => {
 
         const products = await req.user.getProducts()
 
-        res.render('my-products.ejs', {
+        res.render('admin/my-products.ejs', {
             products,
             pageTitle: 'My Products',
             user:req.user
@@ -24,7 +24,7 @@ exports.browseProduct = async (req, res) => {
     try {
         const product = await Product.findByPk(req.params.id)
 
-        res.render('product-detail.ejs', {
+        res.render('shop/product-detail.ejs', {
             pageTitle: product.title,
             product
         })
@@ -43,7 +43,7 @@ exports.getEditProduct = async (req, res) => {
             res.redirect('/404')
         }
 
-        res.render('edit-product.ejs', {
+        res.render('admin/edit-product.ejs', {
             pageTitle: 'Edit Product',
             product:product[0],
             user:req.user
@@ -88,7 +88,7 @@ exports.deleteProduct = async (req, res) => {
 
         await product.destroy()
 
-        res.redirect('/admin/my-products')
+        res.redirect('admin/my-products')
 
     } catch (e) { 
         res.send(e)
@@ -96,7 +96,7 @@ exports.deleteProduct = async (req, res) => {
 }
 exports.getAddProduct = async (req, res) => { 
     try {
-        res.render('sell-product.ejs',{
+        res.render('admin/sell-product.ejs',{
             pageTitle: 'Sell Product',
             user:req.user
             })

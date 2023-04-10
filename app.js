@@ -62,9 +62,9 @@ app.get('/',async (req, res) => {
     try {
         const products = await Product.findAll()
 
-        res.render('shop.ejs', {
+        res.render('shop/shop.ejs', {
             products,
-            pageTitle: 'Shop',
+            pageTitle: 'Trader',
             path: '/'
         })
 
