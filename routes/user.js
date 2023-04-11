@@ -15,6 +15,10 @@ router.get('/forgot-password', userController.getForgotPassword)
 
 router.post('/forgot-password', userController.postForgotPassword)
 
+router.get('/reset-password/:token', userController.getResetPassword)
+
+router.post('/reset-password', userController.postResetPassword)
+
 router.post('/delete-user', auth,userController.deleteUser)
 
 router.get('/logout-user', auth ,userController.postLogout)

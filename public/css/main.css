@@ -47,7 +47,7 @@ body{
     font-size: 18px;
     padding-right: 15px;
 }
-.li1 :hover{
+.li1:hover{
     padding: 10px;
     color:#D3D3D3;
     border-width: 2px;
@@ -65,12 +65,8 @@ body{
     padding-top: 15px;
     padding-left: 15px;
     padding-right: 10px;
-    margin-left: 23px;
+    margin-left: 20px;
     margin-right:10px ;
-    /* width: 8%;
-    height: 6%;
-    margin-left: 5%;
-    margin-right: 2%; */
 }
 form{
     display: inline;
@@ -101,7 +97,6 @@ label{
 ::-webkit-scrollbar-track {
     background-color: #333;
     background-color: black;
-
 }
 
 ::-webkit-scrollbar-thumb {

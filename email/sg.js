@@ -22,21 +22,29 @@ exports.welcomeEmail = (email, name) => {
 
 exports.sendVerificationEmail = (email, name, token) => { 
 
-    sgMail.send({
-        to: email,
-        from: 'mo.elsayed621654@gmail.com',
-        subject: `Task app verification`,
-        text: `Hi ${name}!,Please verify your email by clicking the link ${process.env.APP_LINK}user/verifyMe/${token}`
-    })
-    console.log(`${process.env.APP_LINK}verifyMe/${token}`)
+    try {
+
+        transporter.sendMail({
+            to: email,
+            from: 'mo.elsayed621654@gmail.com',
+            subject: `Task app verification`,
+            text: `Hi ${name}!,Please verify your email by clicking the link ${process.env.APP_LINK}user/verifyMe/${token}`
+        })
+        console.log(`${process.env.APP_LINK}verifyMe/${token}`)
+    } catch (e) { 
+        console.log(e)
+    }
 }
 exports.sendVerificationPassword = (email, name, token) => { 
-
-    sgMail.send({
+    try {
+    transporter.sendMail({
         to: email,
         from: 'mo.elsayed621654@gmail.com',
         subject: `Task app verification`,
-        text: `Hi ${name}!,Please click the link to reset your password ${process.env.APP_LINK}user/verifyMe/${token}`
+        text: `Hi ${name}!,Please click the link to reset your password ${process.env.APP_LINK}user/reset-password/${token}`
     })
-    console.log(`${process.env.APP_LINK}verifyMe/${token}`)
+        console.log(`${process.env.APP_LINK}verifyMe/${token}`)
+    } catch (e) { 
+        console.log(e)
+    }
 }

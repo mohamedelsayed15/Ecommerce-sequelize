@@ -1,7 +1,11 @@
 const { User } = require('../models/user')
+const { Op } = require('sequelize')
 const bcrypt = require('bcryptjs')
-const jwt = require('jsonwebtoken')
-const { welcomeEmail } = require('../email/sg')
+const crypto = require('crypto')
+const {
+    welcomeEmail,
+    sendVerificationPassword,
+} = require('../email/sg')
 
 exports.getSignup = async (req, res) => { 
     try {
@@ -128,7 +132,7 @@ exports.postLogin = async (req, res) => {
 
 exports.getForgotPassword = async (req, res) => {
     try {
-        let message = req.flash('login')
+        let message = req.flash('reset')
 
         console.log(message)
 
@@ -138,7 +142,7 @@ exports.getForgotPassword = async (req, res) => {
             message = null;
         }
         
-        res.render('user/reset-password.ejs', {
+        res.render('user/forgot-password.ejs', {
             pageTitle: 'Trader Login',
             errorMessage: message
         })
@@ -150,9 +154,83 @@ exports.getForgotPassword = async (req, res) => {
 exports.postForgotPassword = async (req, res) => { 
     try {
 
+        const user = await User.findOne({ where: { email: req.body.email } })
+
+        if (!user){
+            req.flash('reset', `couldn't find user`)
+            return res.redirect('/user/forgot-password')
+        }
+
+        const buffer = await crypto.randomBytes(32)
+        const token = buffer.toString('hex')
+
+        console.log(token)
+
+        user.resetToken = token
+        user.resetTokenExpiration = Date.now() + 3600000;//1000*60*60 // 1 hr
+
+        await user.save()
+
+        sendVerificationPassword(user.email,user.name,token)
+
+        res.redirect('/')
+
     } catch (e) { 
         console.log(e)
-        res.send(e)
+        res.redirect('/user/forgot-password')
+    }
+}
+
+exports.getResetPassword = async (req, res) => {
+    try {
+        const user = await User.findOne({
+            where: {
+                resetToken: req.params.token,
+                resetTokenExpiration:{
+                    [Op.gt]: Date.now()
+                }
+            }
+        })
+
+        let message = req.flash('reset')
+
+        console.log(message)
+
+        if (message.length > 0) {
+            message = message[0]
+        } else {
+            message = null;
+        }
+        
+        res.render('user/reset-password.ejs', {
+            pageTitle: 'Trader Login',
+            errorMessage: message,
+            userId: user.id
+        })
+    } catch (e) {
+        console.log(e)
+    }
+}
+//login
+exports.postResetPassword = async (req, res) => { 
+    try {
+
+        const user = await User.findByPk(req.body.id)
+
+        if (!user){
+            req.flash('reset', `couldn't find user`)
+            return res.redirect('/user/forgot-password')
+        }
+
+        user.password = req.body.password
+
+        await user.save()
+
+        res.redirect('/')
+
+    } catch (e) { 
+        console.log(e)
+        res.redirect('/user/forgot-password')
     }
 }
 
