@@ -2,6 +2,7 @@ const { User } = require('../models/user')
 const { Op } = require('sequelize')
 const bcrypt = require('bcryptjs')
 const crypto = require('crypto')
+const { validationResult } = require('express-validator/check')
 const {
     welcomeEmail,
     sendVerificationPassword,
@@ -28,12 +29,18 @@ exports.getSignup = async (req, res) => {
 }
 exports.postSignup = async (req, res) => { 
     try { 
-        const findUser = await User.findOne({ where: { email: req.body.email } })
+        const errors = validationResult(req)
 
-        if (findUser) {
-            req.flash('signup', `user with this email already exists`)
-            return res.redirect('/user/create-user')
+        if (!errors.isEmpty()) { 
+            console.log(errors.array())
+            return res.status(422).render('user/signup.ejs', {//422 invalid input
+                pageTitle: 'E-commerce Sign Up',
+                errorMessage: errors.array()[0].msg
+            })
         }
+
+        
+
         let user = await User.create({
             name: req.body.name,
             email: req.body.email,
@@ -95,8 +102,10 @@ exports.postLogin = async (req, res) => {
             }})
 
         if (!user) {
-            req.flash('login',`couldn't find user`)
-            return res.redirect('/user/login-user')
+            await req.flash('login', `couldn't find user`)
+            return setTimeout(() => {
+                res.redirect('/user/login-user')
+            }, 2000)
         }
 
         //compare hashed password
@@ -104,8 +113,10 @@ exports.postLogin = async (req, res) => {
         const compared = await bcrypt.compare(req.body.password, user.password)
 
         if (compared === false) {
-            req.flash('login', `couldn't find user`)
-            return res.redirect('/user/login-user')
+            await req.flash('login', `couldn't find user`)
+            return setTimeout(() => {
+                res.redirect('/user/login-user')
+            }, 2000)
         }
 
         user.password = ''
@@ -121,7 +132,6 @@ exports.postLogin = async (req, res) => {
         setTimeout(() => {
             res.redirect('/')
         },1000)
-        
 
     } catch (e) { 
         console.log(e)
@@ -192,6 +202,10 @@ exports.getResetPassword = async (req, res) => {
             }
         })
 
+        if (!user) { 
+            res.redirect('/')
+        }
+
         let message = req.flash('reset')
 
         console.log(message)
@@ -201,11 +215,12 @@ exports.getResetPassword = async (req, res) => {
         } else {
             message = null;
         }
-        
+
         res.render('user/reset-password.ejs', {
             pageTitle: 'Trader Login',
             errorMessage: message,
-            userId: user.id
+            userId: user.id,
+            token : req.params.token
         })
     } catch (e) {
         console.log(e)
@@ -217,12 +232,21 @@ exports.postResetPassword = async (req, res) => {
 
         const user = await User.findByPk(req.body.id)
 
+        if (user.resetToken !== req.body.token || user.resetTokenExpiration < Date.now() ) { 
+            req.flash('reset', `couldn't find user`)
+            return res.redirect('/')
+        }
+
         if (!user){
             req.flash('reset', `couldn't find user`)
             return res.redirect('/user/forgot-password')
         }
 
         user.password = req.body.password
+
+        user.resetToken = null
+
+        user.resetTokenExpiration = null
 
         await user.save()
 

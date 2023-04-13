@@ -5,7 +5,7 @@ const { User } = require('../models/user')
 //========================================================
 
 exports.getCart = async (req, res) => { 
-    try {req.user = await User.findOne({ where: {email:'mo.elsayed621654@gmail.com' } })
+    try {
 
         const cart = await req.user.getCart()
 
@@ -42,8 +42,6 @@ exports.getCart = async (req, res) => {
             pageTitle: 'Cart',
             products: cartProducts,
             subtotal,
-            isAuthenticated:req.session.isLoggedIn,
-            csrfToken: req.csrfToken()
         })
 
     } catch (e) { 
@@ -53,10 +51,6 @@ exports.getCart = async (req, res) => {
 }
 exports.postCart = async (req, res) => { 
     try {
-
-        req.user = await User.findOne({ where: {email:'mo.elsayed621654@gmail.com' } })
-        
-        //console.log(req.user)
 
         const cart = await req.user.getCart()
 
@@ -83,9 +77,6 @@ exports.postCart = async (req, res) => {
 }
 exports.minusCartItem = async (req, res) => {
     try {
-        console.log('test \n test')
-
-        req.user = await User.findOne({ where: {email:'mo.elsayed621654@gmail.com' } })
 
         const cart = await req.user.getCart()
 
@@ -137,18 +128,12 @@ exports.deleteProductFromCart = async (req, res) => {
 }
 exports.orderCart = async (req, res) => { 
     try {
-        console.time('myFunction');
-        req.user = await User.findOne({ where: { email: 'mo.elsayed621654@gmail.com' } })
-
-        console.log('test \n test\n \n test \n')
-
-
 
         // const cart = await req.user.getCart()
 
         // const order = await req.user.createOrder()
 
-        //combine 2 awaits better performance
+        //combine 2 awaits better performance //parallel I/O
 
         const [cart, order] = await Promise.all([
             req.user.getCart(),
@@ -156,9 +141,6 @@ exports.orderCart = async (req, res) => {
         ])
 
         const cartItems = await cart.getProducts()
-
-        //console.log(cartItems[0].toJSON())
-
 
         //for (let i = 0; i < cartProducts.length; i++) {
             //await order.addProduct(cartProducts[i], { through: {quantity:cartProducts[i].cartItem.quantity} })

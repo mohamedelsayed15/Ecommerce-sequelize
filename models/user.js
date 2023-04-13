@@ -28,6 +28,9 @@ const User = sequelize.define('user', {
     password: {
         type: Sequelize.STRING,
         allowNull: false,
+        validate: {
+            len: [6 , 20]
+        }
     },
     resetToken: Sequelize.STRING,
     resetTokenExpiration: Sequelize.DATE
