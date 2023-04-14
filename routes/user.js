@@ -2,14 +2,15 @@ const express = require('express')
 const router = express.Router()
 const userController = require('../controllers/user')
 const auth = require('../middleware/auth')
-const { check, body } = require('express-validator/check')
+const { body } = require('express-validator')
 const { User } = require('../models/user')
 
+// create user routes
 router.get('/create-user', userController.getSignup)
 
 router.post('/create-user',
     [
-    check('email')
+    body('email')
     .isEmail()
     .withMessage('enter a valid email')
     .custom(async (value, { req }) => { 
@@ -26,8 +27,8 @@ router.post('/create-user',
     }),
     //password validation
     body('password')
-        .isLength({ min: 6, max: 20 })// shouldn't expose the range of passwords
-        .withMessage('passwords range is between 6 and 20'),
+        .isLength({ min: 6})// shouldn't expose the range of passwords
+        .withMessage('password is too short'),
     //confirm password validation
     body('confirmPassword',
         'password and confirm password are not match')
@@ -41,21 +42,26 @@ router.post('/create-user',
     ], userController.postSignup)
     
 
-
+//login user routes
 router.get('/login-user', userController.getLogin)
 
 router.post('/login-user', userController.postLogin)
 
+
+//forgot password routes
 router.get('/forgot-password', userController.getForgotPassword)
 
 router.post('/forgot-password', userController.postForgotPassword)
 
+//reset password routes
 router.get('/reset-password/:token', userController.getResetPassword)
 
 router.post('/reset-password', userController.postResetPassword)
 
+//logout user route
+router.get('/logout-user', auth ,userController.postLogout)
+//delete user route
 router.post('/delete-user', auth,userController.deleteUser)
 
-router.get('/logout-user', auth ,userController.postLogout)
 
 module.exports=router

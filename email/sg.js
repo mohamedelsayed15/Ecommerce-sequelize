@@ -20,6 +20,7 @@ exports.welcomeEmail = (email, name) => {
     }
 }
 
+
 exports.sendVerificationEmail = (email, name, token) => { 
 
     try {

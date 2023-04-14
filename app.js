@@ -110,6 +110,6 @@ const me = async () => await sequelize.sync()//{force : true}//during developmen
 me()
 
 //=================== listener ======================
-app.listen(3000, () => { 
+app.listen(process.env.PORT, () => { 
     console.log(`server is up on 3000`)
 })
