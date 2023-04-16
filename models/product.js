@@ -1,6 +1,7 @@
 const Sequelize = require('sequelize')
 
 const sequelize = require('../util/mysql')
+//Product table add 'comments' array to it
 
 const Product = sequelize.define('product', {
     id: {
@@ -11,17 +12,11 @@ const Product = sequelize.define('product', {
     },
     title: {
         type: Sequelize.STRING,
-        allowNull: false,
-        validate: {
-            len: [10 , 200]
-        }
+        allowNull: false
     },
     description :{
         type: Sequelize.TEXT('medium'),
-        allowNull: false,
-        // validate: {
-        //     len: [50 , 1500]
-        // }
+        allowNull: false
     },
     price :{
         type: Sequelize.DOUBLE,
@@ -35,6 +30,18 @@ const Product = sequelize.define('product', {
         allowNull: false,
         validate: {
             isUrl: true
+        }
+    },
+    //add comments array using JSON datatype mysql to it
+    comments: {
+        type: Sequelize.JSON,
+        allowNull: true,
+        defaultValue: [],
+        get() {
+            return this.getDataValue('comments')
+        },
+        set(val) {
+            this.setDataValue('comments', val)
         }
     }
 })

@@ -2,6 +2,7 @@ const { User } = require('../models/user')
 const { Op } = require('sequelize')
 const bcrypt = require('bcryptjs')
 const crypto = require('crypto')
+const Product =require('../models/product')
 const { validationResult } = require('express-validator/check')
 const {
     welcomeEmail,
@@ -10,18 +11,16 @@ const {
 
 exports.getSignup = async (req, res) => { 
     try {
-        let message = req.flash('signup')
 
-        console.log(message)
-
-        if (message.length > 0) {
-            message = message[0]
-        } else {
-            message = null;
-        }
         res.render('user/signup.ejs', {
             pageTitle: 'E-commerce Sign Up',
-            errorMessage: message
+            errorMessage: '',
+            pastInput: {
+                email: "",
+                password: "",
+                name: "",
+                confirmPassword:""
+            }
         })
     } catch (e) { 
         console.log(e)
@@ -35,7 +34,13 @@ exports.postSignup = async (req, res) => {
             console.log(errors.array())
             return res.status(422).render('user/signup.ejs', {//422 invalid input
                 pageTitle: 'E-commerce Sign Up',
-                errorMessage: errors.array()[0].msg
+                errorMessage: errors.array()[0].msg,
+                pastInput: {
+                    email: req.body.email,
+                    password: req.body.password,
+                    name: req.body.name,
+                    confirmPassword:req.body.confirmPassword
+                }
             })
         }
 
@@ -73,19 +78,14 @@ exports.postSignup = async (req, res) => {
 
 exports.getLogin = async (req, res) => {
     try {
-        let message = req.flash('login')
 
-        console.log(message)
-
-        if (message.length > 0) {
-            message = message[0]
-        } else {
-            message = null;
-        }
-        
         res.render('user/login.ejs', {
             pageTitle: 'E-commerce Login',
-            errorMessage: message
+            errorMessage: '',
+            pastInput: {
+                email: '',
+                password: ''
+            }
         })
     } catch (e) {
         console.log(e)
@@ -94,6 +94,19 @@ exports.getLogin = async (req, res) => {
 //login
 exports.postLogin = async (req, res) => { 
     try {
+        const errors = validationResult(req)
+
+        if (!errors.isEmpty()) {
+            console.log(errors.array())
+            return res.status(422).render('user/login.ejs', {//422 invalid input
+                pageTitle: 'E-commerce Sign Up',
+                errorMessage: errors.array()[0].msg,
+                pastInput: {
+                    email: req.body.email,
+                    password: req.body.password
+                }
+            })
+        }
 
         // fetching user
         const user = await User.findOne({
@@ -102,10 +115,14 @@ exports.postLogin = async (req, res) => {
             }})
 
         if (!user) {
-            await req.flash('login', `couldn't find user`)
-            return setTimeout(() => {
-                res.redirect('/user/login-user')
-            }, 2000)
+            return res.status(422).render('user/login.ejs', {//422 invalid input
+                pageTitle: 'E-commerce Sign Up',
+                errorMessage: "couldn't find user",
+                pastInput: {
+                    email: req.body.email,
+                    password: req.body.password
+                }
+            })
         }
 
         //compare hashed password
@@ -113,10 +130,14 @@ exports.postLogin = async (req, res) => {
         const compared = await bcrypt.compare(req.body.password, user.password)
 
         if (compared === false) {
-            await req.flash('login', `couldn't find user`)
-            return setTimeout(() => {
-                res.redirect('/user/login-user')
-            }, 2000)
+            return res.status(422).render('user/login.ejs', {//422 invalid input
+                pageTitle: 'E-commerce Sign Up',
+                errorMessage: "couldn't find user",
+                pastInput: {
+                    email: req.body.email,
+                    password: req.body.password
+                }
+            })
         }
 
         user.password = ''
@@ -142,39 +163,46 @@ exports.postLogin = async (req, res) => {
 
 exports.getForgotPassword = async (req, res) => {
     try {
-        let message = req.flash('reset')
 
-        console.log(message)
-
-        if (message.length > 0) {
-            message = message[0]
-        } else {
-            message = null;
-        }
-        
         res.render('user/forgot-password.ejs', {
-            pageTitle: 'Trader Login',
-            errorMessage: message
+            pageTitle: 'Trader',
+            errorMessage: '',
+            pastInput: {
+                email:''
+            }
         })
     } catch (e) {
         console.log(e)
     }
 }
-//login
+
 exports.postForgotPassword = async (req, res) => { 
     try {
+        const errors = validationResult(req)
+
+        console.log(errors)
+
+        console.log(req.body.email)
+
+        if (!errors.isEmpty()) {
+            return res.render('user/forgot-password.ejs', {
+                pageTitle: 'Trader',
+                errorMessage: errors.array()[0].msg,
+                pastInput: {
+                    email:req.body.email
+                }
+            })
+        }
 
         const user = await User.findOne({ where: { email: req.body.email } })
 
-        if (!user){
-            req.flash('reset', `couldn't find user`)
-            return res.redirect('/user/forgot-password')
+        if (!user) {
+            return res.redirect('/');
         }
 
         const buffer = await crypto.randomBytes(32)
         const token = buffer.toString('hex')
 
-        console.log(token)
 
         user.resetToken = token
         user.resetTokenExpiration = Date.now() + 3600000;//1000*60*60 // 1 hr
@@ -201,45 +229,54 @@ exports.getResetPassword = async (req, res) => {
                 }
             }
         })
-
+        console.log(user)
         if (!user) { 
-            res.redirect('/')
-        }
-
-        let message = req.flash('reset')
-
-        console.log(message)
-
-        if (message.length > 0) {
-            message = message[0]
-        } else {
-            message = null;
+            return res.redirect('/')
         }
 
         res.render('user/reset-password.ejs', {
-            pageTitle: 'Trader Login',
-            errorMessage: message,
+            pageTitle: 'Trader',
+            errorMessage: '',
             userId: user.id,
-            token : req.params.token
+            token: req.params.token,
+            pastInput: {
+                password: '',
+                confirmPassword:''
+            }
         })
     } catch (e) {
         console.log(e)
     }
 }
-//login
+
 exports.postResetPassword = async (req, res) => { 
     try {
 
+        const errors = validationResult(req)
+
+        console.log(errors)
+
+        if (!errors.isEmpty()) {
+            return res.render('user/reset-password.ejs', {
+                pageTitle: 'Trader',
+                errorMessage: errors.array()[0].msg,
+                userId: req.body.id,
+                token: req.body.token,
+                pastInput: {
+                    password: req.body.password,
+                    confirmPassword:req.body.confirmPassword
+                }
+            })
+        }
+
         const user = await User.findByPk(req.body.id)
 
-        if (user.resetToken !== req.body.token || user.resetTokenExpiration < Date.now() ) { 
-            req.flash('reset', `couldn't find user`)
+        if (!user){
             return res.redirect('/')
         }
 
-        if (!user){
-            req.flash('reset', `couldn't find user`)
-            return res.redirect('/user/forgot-password')
+        if (user.resetToken !== req.body.token || user.resetTokenExpiration < Date.now() ) { 
+            return res.redirect('/')
         }
 
         user.password = req.body.password
@@ -255,6 +292,64 @@ exports.postResetPassword = async (req, res) => {
     } catch (e) { 
         console.log(e)
         res.redirect('/user/forgot-password')
+    }
+}
+
+exports.addEditCommentToProduct = async (req, res) => {
+    try { 
+
+        //validate input before this
+
+        const product = await Product.findByPk(req.params.productId)
+
+        let found = false
+        let index = -1
+
+        for (let i = 0; i < product.comments.length; i++) {
+            if (product.comments[i].userId === req.user.id) {
+                found = true
+                index = i
+            }
+        }
+        if (found === true) {
+
+            product.comments[index].comment = req.body.comment
+            product.comments[index].rating = req.body.rate
+
+        } else { 
+
+            product.comments.push({
+                text: req.body.comment,
+                userId: req.user.id,
+                rating: req.body.rate
+            })
+
+        }
+
+        await product.save()
+
+        res.redirect(`/product/${req.params.productId}`)
+
+    } catch (e) { 
+        console.log(e)
+    }
+}
+exports.deleteComment = async (req, res) => {
+    try {
+        const product = await Product.findByPk(req.params.productId)
+
+        const comments = product.comments.filter(comment => { 
+            if (comment.userId !== req.user.id) { 
+                return comment
+            }
+        })
+
+        product.comments = comments
+
+        await product.save()
+
+    } catch (e) { 
+        console.log(e)
     }
 }
 

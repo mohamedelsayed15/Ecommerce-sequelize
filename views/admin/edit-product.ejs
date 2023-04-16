@@ -32,6 +32,9 @@
                     <input type="hidden" name="_csrf" value="<%= csrfToken %>">
                     <button id ="button"type="submit">Edit Product</button>
             </form>
+            <% if(errorMessage){ %>
+                <div id ="error"><%= errorMessage %></div>
+                <% } %>
         </div>
     </div>
     <%- include('../includes/footer.ejs') %>

@@ -29,7 +29,7 @@ const User = sequelize.define('user', {
         type: Sequelize.STRING,
         allowNull: false,
         validate: {
-            len: [6 , 20]
+            min:6
         }
     },
     resetToken: Sequelize.STRING,

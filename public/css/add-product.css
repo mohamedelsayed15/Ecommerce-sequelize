@@ -7,10 +7,8 @@
     color:black;
     font-weight: 500;
     font-size:20px;
-    border-radius: 10px;
-    border: #333 solid;
-    border: black solid;
-
+    border-radius: 5px;
+    border: solid 1px;
     width: 90%;
     padding-top: 3px;
     padding-bottom: 3px;
@@ -23,6 +21,8 @@
 
 .container input:focus {
     outline: none;
+    border: solid 3px;
+
 }
 .container {
     user-select: none;
@@ -34,8 +34,7 @@
     color: #333;
     color: black;
     margin: 7% 31%;
-    box-shadow: 0px 0px 5px 2px rgba(0, 0, 0, 0.5)
-    
+    /* box-shadow: 0px 0px 5px 2px rgba(0, 0, 0, 0.5) */
 }
 #description{
     /*scrollbar-width: thin; /* width of the scrollbar */
@@ -53,12 +52,14 @@
     margin-right: 5%;
     color: black;
     resize: none;
-    border-radius: 10px;
-    border: black solid;
+    border-radius: 5px;
+    border: solid 1px;
 }
 
 #description:focus {
     outline: none;
+    border: solid 3px;
+
 }
 #description::-webkit-scrollbar {
     width: 10px;
@@ -83,21 +84,31 @@
     margin: 0;
 }
 #button{
-    font-weight: 600;
+    font-weight: 500;
     font-size: 20px;
-    border-radius: 50px;
-    background-color:black;
-    border: solid #333 4px;
-    color: white;
-    padding-top: 10px;
-    padding-bottom: 10px;
-    margin-top:25px ;
-    margin-left: 33%;
-    margin-bottom: 10px;
-    width: 35%;
+    border-radius: 5px;
+    background-color:white;
     border: none;
+    color: black;
+    padding: 7px 15px;
+    margin-top:25px ;
+    margin-left: 38%;
+    margin-bottom: 10px;
+    border: black solid 3px;
+
 }
 #button:hover {
-    color: #333;
-    background-color: #D3D3D3 ;
+    background-color: black ;
+    color: white;
+}
+#error{
+    /* margin: 5% 5%; */
+    text-align: center;
+    padding: 5px 5px;
+    border: red solid 1px;
+    border-radius: 5px;
+    background-color: #f4c0ba;
+    width:80%;
+    margin-left: 10%;
+    margin-bottom: 3%;
 }

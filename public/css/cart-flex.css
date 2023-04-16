@@ -23,7 +23,7 @@ form{
     height: 450px;
     margin-right: 5%;
     width:80%;
-    border: #333 solid 3px;
+    /* border: #333 solid 3px; */
     border-radius: 10px;
     color: black;
     text-align: center;
