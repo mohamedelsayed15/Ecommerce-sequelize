@@ -4,7 +4,6 @@ const session = require('express-session')
 const bodyParser = require('body-parser')
 const SequelizeStore = require("connect-session-sequelize")(session.Store);
 const csrf = require('csurf')
-const flash = require('connect-flash')
 //================= DataBase linking =================
 const sequelize = require('./util/mysql')
 //============= Require for Relations ================
@@ -47,7 +46,6 @@ app.use(
     })
 )
 app.use(csrfProtection)
-app.use(flash())
 //==================== Routes ======================
 app.use((req, res, next) => {
     res.locals.isAuthenticated = req.session.isLoggedIn
