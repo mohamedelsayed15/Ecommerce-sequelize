@@ -4,7 +4,7 @@ const { User } = require('../models/user')
 
 //========================================================
 
-exports.getCart = async (req, res) => { 
+exports.getCart = async (req, res , next ) => { 
     try {
 
         const cart = await req.user.getCart()
@@ -46,10 +46,12 @@ exports.getCart = async (req, res) => {
 
     } catch (e) { 
         console.log(e)
-        res.send(e)
+        const error = new Error(e)
+        error.httpStatusCode = 500
+        return next(error)
     }
 }
-exports.postCart = async (req, res) => { 
+exports.postCart = async (req, res , next ) => { 
     try {
 
         const cart = await req.user.getCart()
@@ -72,10 +74,12 @@ exports.postCart = async (req, res) => {
         res.redirect('/shop/cart')
     } catch (e) { 
         console.log(e)
-        res.send(e)
+        const error = new Error(e)
+        error.httpStatusCode = 500
+        return next(error)
     }
 }
-exports.minusCartItem = async (req, res) => {
+exports.minusCartItem = async (req, res , next ) => {
     try {
 
         const cart = await req.user.getCart()
@@ -102,10 +106,12 @@ exports.minusCartItem = async (req, res) => {
         res.redirect('/shop/cart')
     } catch (e) { 
         console.log(e)
-        res.status(400).send()
+        const error = new Error(e)
+        error.httpStatusCode = 500
+        return next(error)
     }
 }
-exports.deleteProductFromCart = async (req, res) => { 
+exports.deleteProductFromCart = async (req, res , next ) => { 
     try {
         req.user = await User.findOne({ where: { email: 'mo.elsayed621654@gmail.com' } })
 
@@ -123,10 +129,12 @@ exports.deleteProductFromCart = async (req, res) => {
 
     } catch (e) { 
         console.log(e)
-        res.status(400).send()
+        const error = new Error(e)
+        error.httpStatusCode = 500
+        return next(error)
     }
 }
-exports.orderCart = async (req, res) => { 
+exports.orderCart = async (req, res , next ) => { 
     try {
 
         // const cart = await req.user.getCart()
@@ -165,10 +173,12 @@ exports.orderCart = async (req, res) => {
         console.timeEnd('myFunction');
     } catch (e) { 
         console.log(e)
-        res.status(400).send()
+        const error = new Error(e)
+        error.httpStatusCode = 500
+        return next(error)
     }
 }
-exports.getOrders = async (req, res) => {
+exports.getOrders = async (req, res , next ) => {
     try {
 
         const orders = await req.user.getOrders({ include: 'products' })
@@ -179,6 +189,8 @@ exports.getOrders = async (req, res) => {
 
     } catch (e) { 
         console.log(e)
-        res.status(400).send()
+        const error = new Error(e)
+        error.httpStatusCode = 500
+        return next(error)
     }
 }

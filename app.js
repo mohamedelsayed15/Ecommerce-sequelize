@@ -42,12 +42,12 @@ app.use(
         }),
         resave: false, // we support the touch method so per the express-session docs this should be set to false
         saveUninitialized: false,
-
     })
 )
 app.use(csrfProtection)
 //==================== Routes ======================
 app.use((req, res, next) => {
+
     res.locals.isAuthenticated = req.session.isLoggedIn
     res.locals.csrfToken = req.csrfToken()
     next()
@@ -56,8 +56,10 @@ app.use('/admin',adminRoutes)
 app.use('/shop', shopRoutes)
 app.use('/user', userRoutes)
 //main
-app.get('/',async (req, res) => { 
+app.get('/', async (req, res, next) => { 
+    
     try {
+        
         const products = await Product.findAll()
 
         res.render('shop/shop.ejs', {
@@ -66,18 +68,53 @@ app.get('/',async (req, res) => {
             path: '/'
         })
 
-    } catch(e){}
+    } catch (e) {
+        console.log(e)
+        const error = new Error(e)
+        error.httpStatusCode = 500
+        return next(error)
+    }
+})
+app.use((error, req, res, next) => { 
+    try {
+        res.render('500.ejs', {
+            pageTitle: 'ERROR 500',
+            isAuthenticated: false
+    })
+    
+    } catch (e) { 
+
+    }
+})
+//500
+app.get('/500', (req, res, next) => { 
+    try {
+
+        res.render('500.ejs', {
+            pageTitle: 'ERROR 500'
+        })
+
+    } catch (e) {
+        console.log(e)
+    }
 })
 //404
-app.use('/*', (req, res) => { 
+app.use('/*', (req, res, next) => { 
     try {
 
         res.render('ERROR-404.ejs', {
             pageTitle: 'ERROR 404'
         })
 
-    } catch(e){}
+    } catch (e) {
+        console.log(e)
+        const error = new Error(e)
+        error.httpStatusCode = 500
+        return next(error)
+    }
 })
+
+
 //=================== Relations =======================
 //relation indicates that a user can handle many products 
 ///create /delete /update /read one to many

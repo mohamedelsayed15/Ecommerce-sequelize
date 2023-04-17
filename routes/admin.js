@@ -76,24 +76,24 @@ router.post('/edit-product',[
             return true
         }),
 
-        body('price')
-            .isFloat()
-            .custom((value, { req }) => {
-                if (isNaN(value)) { 
-                    throw new Error('price can only be a number!')
-                }
-                if (value <= 0.1) {
-                    throw new Error('price cant be lower than 0.1 $')
-                }
-                if (value % 1 === 0) {
-                    throw new Error('price has to be a float number example: 8.99')
-                }
-                const decimalPlaces = value.toString().split('.')[1]?.length || 0;
-                if (decimalPlaces > 2) { 
-                    throw new Error('price has to be formatted as 8.99 ')
-                }
-                return true
-            }),
+    body('price')
+        .isFloat()
+        .custom((value, { req }) => {
+            if (isNaN(value)) { 
+                throw new Error('price can only be a number!')
+            }
+            if (value <= 0.1) {
+                throw new Error('price cant be lower than 0.1 $')
+            }
+            if (value % 1 === 0) {
+                throw new Error('price has to be a float number example: 8.99')
+            }
+            const decimalPlaces = value.toString().split('.')[1]?.length || 0;
+            if (decimalPlaces > 2) { 
+                throw new Error('price has to be formatted as 8.99 ')
+            }
+            return true
+        }),
 
     body('image_url')
         .isURL()

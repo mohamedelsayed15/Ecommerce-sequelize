@@ -5,10 +5,15 @@ const { User } = require('../models/user')
 const auth = async (req, res, next) => { 
     try {
 
-        if (!req.session.isLoggedIn ) { 
+        if (!req.session.user ) { 
             return res.redirect('/user/login-user')
         }
+
         const user = await User.findByPk(req.session.user.id)
+
+        if (!user) {
+            return next()
+        }
 
         req.user = user
 
@@ -16,8 +21,9 @@ const auth = async (req, res, next) => {
 
     } catch (e) {  
         console.log(e)
-        res.status(401).redirect('/')
-        //res.status(401).send({Error : "Your not authenticated"})
+        const error = new Error(e)
+        error.httpStatusCode = 500
+        return next(error)
     }
 }
 

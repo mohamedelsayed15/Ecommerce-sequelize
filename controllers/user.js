@@ -9,11 +9,11 @@ const {
     sendVerificationPassword,
 } = require('../email/sg')
 
-exports.getSignup = async (req, res) => { 
+exports.getSignup = async (req, res , next ) => { 
     try {
 
         res.render('user/signup.ejs', {
-            pageTitle: 'E-commerce Sign Up',
+            pageTitle: 'Trader Sign Up',
             errorMessage: '',
             pastInput: {
                 email: "",
@@ -24,16 +24,19 @@ exports.getSignup = async (req, res) => {
         })
     } catch (e) { 
         console.log(e)
+        const error = new Error(e)
+        error.httpStatusCode = 500
+        return next(error)
     }
 }
-exports.postSignup = async (req, res) => { 
+exports.postSignup = async (req, res , next ) => { 
     try { 
         const errors = validationResult(req)
 
         if (!errors.isEmpty()) { 
             console.log(errors.array())
             return res.status(422).render('user/signup.ejs', {//422 invalid input
-                pageTitle: 'E-commerce Sign Up',
+                pageTitle: 'Trader Sign Up',
                 errorMessage: errors.array()[0].msg,
                 pastInput: {
                     email: req.body.email,
@@ -71,16 +74,17 @@ exports.postSignup = async (req, res) => {
 
     } catch (e) { 
         console.log(e)
-        if (e.errors) { return res.status(409).send("account with this email already exists") }
-        res.send(e)
+        const error = new Error(e)
+        error.httpStatusCode = 500
+        return next(error)
     }
 }
 
-exports.getLogin = async (req, res) => {
+exports.getLogin = async (req, res, next) => {
     try {
 
         res.render('user/login.ejs', {
-            pageTitle: 'E-commerce Login',
+            pageTitle: 'Trader Login',
             errorMessage: '',
             pastInput: {
                 email: '',
@@ -89,17 +93,20 @@ exports.getLogin = async (req, res) => {
         })
     } catch (e) {
         console.log(e)
+        const error = new Error(e)
+        error.httpStatusCode = 500
+        return next(error)
     }
 }
 //login
-exports.postLogin = async (req, res) => { 
+exports.postLogin = async (req, res , next ) => { 
     try {
         const errors = validationResult(req)
 
         if (!errors.isEmpty()) {
             console.log(errors.array())
             return res.status(422).render('user/login.ejs', {//422 invalid input
-                pageTitle: 'E-commerce Sign Up',
+                pageTitle: 'Trader Sign Up',
                 errorMessage: errors.array()[0].msg,
                 pastInput: {
                     email: req.body.email,
@@ -116,7 +123,7 @@ exports.postLogin = async (req, res) => {
 
         if (!user) {
             return res.status(422).render('user/login.ejs', {//422 invalid input
-                pageTitle: 'E-commerce Sign Up',
+                pageTitle: 'Trader Sign Up',
                 errorMessage: "couldn't find user",
                 pastInput: {
                     email: req.body.email,
@@ -131,7 +138,7 @@ exports.postLogin = async (req, res) => {
 
         if (compared === false) {
             return res.status(422).render('user/login.ejs', {//422 invalid input
-                pageTitle: 'E-commerce Sign Up',
+                pageTitle: 'Trader Sign Up',
                 errorMessage: "couldn't find user",
                 pastInput: {
                     email: req.body.email,
@@ -156,12 +163,14 @@ exports.postLogin = async (req, res) => {
 
     } catch (e) { 
         console.log(e)
-        res.send(e)
+        const error = new Error(e)
+        error.httpStatusCode = 500
+        return next(error)
     }
 }
 
 
-exports.getForgotPassword = async (req, res) => {
+exports.getForgotPassword = async (req, res , next ) => {
     try {
 
         res.render('user/forgot-password.ejs', {
@@ -173,10 +182,13 @@ exports.getForgotPassword = async (req, res) => {
         })
     } catch (e) {
         console.log(e)
+        const error = new Error(e)
+        error.httpStatusCode = 500
+        return next(error)
     }
 }
 
-exports.postForgotPassword = async (req, res) => { 
+exports.postForgotPassword = async (req, res , next ) => { 
     try {
         const errors = validationResult(req)
 
@@ -215,11 +227,13 @@ exports.postForgotPassword = async (req, res) => {
 
     } catch (e) { 
         console.log(e)
-        res.redirect('/user/forgot-password')
+        const error = new Error(e)
+        error.httpStatusCode = 500
+        return next(error)
     }
 }
 
-exports.getResetPassword = async (req, res) => {
+exports.getResetPassword = async (req, res , next ) => {
     try {
         const user = await User.findOne({
             where: {
@@ -246,10 +260,13 @@ exports.getResetPassword = async (req, res) => {
         })
     } catch (e) {
         console.log(e)
+        const error = new Error(e)
+        error.httpStatusCode = 500
+        return next(error)
     }
 }
 
-exports.postResetPassword = async (req, res) => { 
+exports.postResetPassword = async (req, res , next ) => { 
     try {
 
         const errors = validationResult(req)
@@ -291,11 +308,13 @@ exports.postResetPassword = async (req, res) => {
 
     } catch (e) { 
         console.log(e)
-        res.redirect('/user/forgot-password')
+        const error = new Error(e)
+        error.httpStatusCode = 500
+        return next(error)
     }
 }
 
-exports.addEditCommentToProduct = async (req, res) => {
+exports.addEditCommentToProduct = async (req, res , next ) => {
     try { 
 
         //validate input before this
@@ -332,9 +351,12 @@ exports.addEditCommentToProduct = async (req, res) => {
 
     } catch (e) { 
         console.log(e)
+        const error = new Error(e)
+        error.httpStatusCode = 500
+        return next(error)
     }
 }
-exports.deleteComment = async (req, res) => {
+exports.deleteComment = async (req, res , next ) => {
     try {
         const product = await Product.findByPk(req.params.productId)
 
@@ -350,10 +372,13 @@ exports.deleteComment = async (req, res) => {
 
     } catch (e) { 
         console.log(e)
+        const error = new Error(e)
+        error.httpStatusCode = 500
+        return next(error)
     }
 }
 
-exports.postLogout = async (req, res) => {
+exports.postLogout = async (req, res , next ) => {
     try {
 
         await req.session.destroy()
@@ -364,10 +389,13 @@ exports.postLogout = async (req, res) => {
 
     } catch (e) {
         console.log(e)
+        const error = new Error(e)
+        error.httpStatusCode = 500
+        return next(error)
     }
 }
 
-exports.deleteUser = async (req, res) => {
+exports.deleteUser = async (req, res , next ) => {
     try {
 
         await req.user.destroy()
@@ -375,6 +403,9 @@ exports.deleteUser = async (req, res) => {
         res.send(req.user)
 
     } catch (e) { 
-        res.send(e)
+        console.log(e)
+        const error = new Error(e)
+        error.httpStatusCode = 500
+        return next(error)
     }
 }

@@ -4,7 +4,7 @@ const Cart = require('../models/cart')
 const { User } = require('../models/user')
 const { validationResult } = require('express-validator')
 
-exports.getProducts = async (req, res) => {
+exports.getProducts = async (req, res , next ) => {
     try {
 
         const products = await req.user.getProducts()
@@ -17,11 +17,13 @@ exports.getProducts = async (req, res) => {
 
     } catch (e) { 
         console.log(e)
-        res.send("error")
+        const error = new Error(e)
+        error.httpStatusCode = 500
+        return next(error)
     }
 }
 
-exports.browseProduct = async (req, res) => {
+exports.browseProduct = async (req, res , next ) => {
     try {
         const product = await Product.findByPk(req.params.id)
 
@@ -31,11 +33,14 @@ exports.browseProduct = async (req, res) => {
         })
 
     } catch (e) { 
-        res.send(e)
+        console.log(e)
+        const error = new Error(e)
+        error.httpStatusCode = 500
+        return next(error)
     }
 }
 
-exports.getEditProduct = async (req, res) => { 
+exports.getEditProduct = async (req, res , next ) => { 
     try {
 
         const product = await req.user.getProducts({ where: { id: req.params.id } })
@@ -52,10 +57,13 @@ exports.getEditProduct = async (req, res) => {
         })
     } catch (e) { 
         console.log(e)
+        const error = new Error(e)
+        error.httpStatusCode = 500
+        return next(error)
     }
 }
 
-exports.postEditProduct = async (req, res) => {
+exports.postEditProduct = async (req, res , next ) => {
     try {
         const errors = validationResult(req)
 
@@ -87,11 +95,14 @@ exports.postEditProduct = async (req, res) => {
         res.redirect('/') 
     }
     catch (e) { 
-        res.send(e)
+        console.log(e)
+        const error = new Error(e)
+        error.httpStatusCode = 500
+        return next(error)
     }
 }
 
-exports.deleteProduct = async (req, res) => {
+exports.deleteProduct = async (req, res , next ) => {
     try {
 
         const product = await Product.findByPk(req.params.id)
@@ -103,11 +114,14 @@ exports.deleteProduct = async (req, res) => {
         res.redirect('/')
 
     } catch (e) { 
-        res.send(e)
+        console.log(e)
+        const error = new Error(e)
+        error.httpStatusCode = 500
+        return next(error)
     }
 }
 
-exports.getAddProduct = async (req, res) => { 
+exports.getAddProduct = async (req, res , next ) => { 
     try {
         res.render('admin/sell-product.ejs',{
             pageTitle: 'Sell Product',
@@ -122,10 +136,13 @@ exports.getAddProduct = async (req, res) => {
             })
     } catch (e) { 
         console.log(e)
+        const error = new Error(e)
+        error.httpStatusCode = 500
+        return next(error)
     }
 }
 
-exports.postAddProduct = async (req, res) => {
+exports.postAddProduct = async (req, res , next ) => {
     try {
         const errors = validationResult(req)
 
@@ -154,6 +171,8 @@ exports.postAddProduct = async (req, res) => {
 
     } catch (e) { 
         console.log(e)
-        res.send("missing information")
+        const error = new Error(e)
+        error.httpStatusCode = 500
+        return next(error)
     }
 }
