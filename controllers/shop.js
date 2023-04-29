@@ -1,7 +1,8 @@
 const Product = require('../models/product')
 const { Order, OrderItem } = require('../models/order')
 const { User } = require('../models/user')
-
+const path = require('path')
+const fs = require('fs')
 //========================================================
 
 exports.getCart = async (req, res , next ) => { 
@@ -150,9 +151,6 @@ exports.orderCart = async (req, res , next ) => {
 
         const cartItems = await cart.getProducts()
 
-        //for (let i = 0; i < cartProducts.length; i++) {
-            //await order.addProduct(cartProducts[i], { through: {quantity:cartProducts[i].cartItem.quantity} })
-        //}
         const orderItems = cartItems.map(item => { 
             return {
                 quantity: item.cartItem.quantity,
@@ -161,16 +159,26 @@ exports.orderCart = async (req, res , next ) => {
             }
         })
         
+
+        //for (let i = 0; i < cartProducts.length; i++) {
+            //await order.addProduct(cartProducts[i], { through: {quantity:cartProducts[i].cartItem.quantity} })
+        //}
+
+        //bulk create better than create when making multiple records // parallel I/O
+
         // await OrderItem.bulkCreate(orderItems)
 
         // await cart.setProducts(null)
 
         await Promise.all([
             OrderItem.bulkCreate(orderItems),
-            cart.setProducts(null)])
+            cart.setProducts(null)
+        ])
 
-        res.send("orderItems")
-        console.timeEnd('myFunction');
+        res.redirect('/shop/orders')
+
+        console.timeEnd('myFunction')
+
     } catch (e) { 
         console.log(e)
         const error = new Error(e)
@@ -178,6 +186,7 @@ exports.orderCart = async (req, res , next ) => {
         return next(error)
     }
 }
+
 exports.getOrders = async (req, res , next ) => {
     try {
 
@@ -186,6 +195,23 @@ exports.getOrders = async (req, res , next ) => {
         console.log(orders[0].toJSON())
 
         res.send(orders)
+
+    } catch (e) { 
+        console.log(e)
+        const error = new Error(e)
+        error.httpStatusCode = 500
+        return next(error)
+    }
+}
+exports.getInvoice = async (req, res, next) => { 
+    try {
+        const orderId = req.params.orderId
+        const invoiceName = 'invoice-' + orderId + '.pdf'
+        const invoicePath = path.join('data', 'invoices', invoiceName)
+
+        const file = await fs.promises.readFile(invoicePath)
+
+        res.send(file)
 
     } catch (e) { 
         console.log(e)

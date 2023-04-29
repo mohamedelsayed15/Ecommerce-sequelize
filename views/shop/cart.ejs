@@ -7,6 +7,11 @@
 <%- include('../includes/nav.ejs') %>
 
         <main>
+            <form action="/shop/order-cart %>" method="post">
+                <input type="hidden" name="_csrf" value="<%= csrfToken %>">
+                <button class="button" id="" >Order Now</button>
+            </form>
+            
             <div class="flexbox-container">
                 <h1 style = "margin-left: 22%;">Subtotal (<%= products.length %> items): $<%= subtotal %></h1>
                 <% for(let i=0; i< products.length ;i++){ %>
@@ -39,7 +44,7 @@
                         $<%= products[i].price %> a piece</p>
                     <br>
                     
-                    <!-- <p><%= products[i].title %></p> -->
+
                     
                     
                 </div>

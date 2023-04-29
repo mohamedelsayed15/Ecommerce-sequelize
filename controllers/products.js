@@ -66,7 +66,7 @@ exports.getEditProduct = async (req, res , next ) => {
 exports.postEditProduct = async (req, res , next ) => {
     try {
         const errors = validationResult(req)
-
+        const image = req.file
         if (!errors.isEmpty()) { 
             return res.render('admin/edit-product.ejs',{
                         pageTitle: 'Sell Product',
@@ -77,11 +77,13 @@ exports.postEditProduct = async (req, res , next ) => {
                             title: req.body.title,
                             description: req.body.description,
                             price: req.body.price,
-                            image_url:req.body.image_url
                         }   
                     })
                 }
 
+        console.log(image.path)
+        
+        
         const product = await Product.findByPk(req.body.id)
 
         if (req.user.id !== product.userId) { return res.status(403).send() }
@@ -89,6 +91,10 @@ exports.postEditProduct = async (req, res , next ) => {
         const updates = Object.keys(req.body)
 
         updates.forEach(update => product[update] = req.body[update])
+
+        if (image.path) { 
+            product.image = image.path
+        }
 
         await product.save()
 
@@ -146,6 +152,21 @@ exports.postAddProduct = async (req, res , next ) => {
     try {
         const errors = validationResult(req)
 
+        const image = req.file
+
+        if (!image) { 
+            return res.render('admin/sell-product.ejs',{
+                pageTitle: 'Sell Product',
+                user: req.user,
+                errorMessage:'Attached file is not an image',
+                pastInput: {
+                    title: req.body.title,
+                    description: req.body.description,
+                    price: req.body.price
+            }
+        })
+        }
+        console.log(image.path)
         if (!errors.isEmpty()) { 
             return res.render('admin/sell-product.ejs',{
                     pageTitle: 'Sell Product',
@@ -154,8 +175,7 @@ exports.postAddProduct = async (req, res , next ) => {
                     pastInput: {
                         title: req.body.title,
                         description: req.body.description,
-                        price: req.body.price,
-                        image_url:req.body.image_url
+                        price: req.body.price
                 }
             })
         }
@@ -163,8 +183,8 @@ exports.postAddProduct = async (req, res , next ) => {
         await req.user.createProduct({//auto save  //auto fill for id
             title: req.body.title,
             description:req.body.description,
-            price:req.body.price,
-            image_url: req.body.image_url
+            price: req.body.price,
+            image :image.path
         })
 
         res.redirect('/')

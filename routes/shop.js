@@ -12,10 +12,14 @@ router.post('/cart/minus-cart-item/:id',auth ,shopController.minusCartItem)
 
 router.post('/cart/delete-from-cart/:id' ,auth,shopController.deleteProductFromCart)
 
-router.get('/order-cart',auth,shopController.orderCart)
+router.post('/order-cart',auth,shopController.orderCart)
 
-router.get('/get-orders',auth,shopController.getOrders)
+router.get('/orders', auth, shopController.getOrders)
+
+//order invoice
+router.get('/orders/:orderId',auth,shopController.getInvoice)
 
 router.get('/browse-product/:id', productsController.browseProduct)
+
 
 module.exports = router

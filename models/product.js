@@ -25,12 +25,9 @@ const Product = sequelize.define('product', {
             min:0.1
         }
     },
-    image_url: {
+    image: {
         type: Sequelize.STRING,
         allowNull: false,
-        validate: {
-            isUrl: true
-        }
     },
     //add comments array using JSON datatype mysql to it
     comments: {

@@ -4,6 +4,9 @@ const session = require('express-session')
 const bodyParser = require('body-parser')
 const SequelizeStore = require("connect-session-sequelize")(session.Store);
 const csrf = require('csurf')
+const path = require('path')
+//=================  Calling Multer  =================
+const upload = require('./multer/multer')
 //================= DataBase linking =================
 const sequelize = require('./util/mysql')
 //============= Require for Relations ================
@@ -25,12 +28,15 @@ const csrfProtection = csrf()
 app.use(bodyParser.urlencoded({ extended: true }))
 //serve css
 app.use(express.static('public'))
+app.use('/images',express.static(path.join(__dirname,'images')))
 //parser //json data limiter
 app.use(express.json({ limit: '1kb' })) 
 //sets template engine
 app.set('view engine', 'ejs')
 //optional set default views to views
 app.set('views', 'views')
+//multer
+app.use(upload)
 //session
 app.use(
     session({
@@ -77,6 +83,7 @@ app.get('/', async (req, res, next) => {
 })
 app.use((error, req, res, next) => { 
     try {
+        console.log(error)
         res.render('500.ejs', {
             pageTitle: 'ERROR 500',
             isAuthenticated: false

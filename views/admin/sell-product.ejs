@@ -7,7 +7,7 @@
         <%- include('../includes/nav.ejs') %>
 
         <div class="container">
-            <form method="post"  action="/admin/sell-product" novalidate>
+            <form method="post"  action="/admin/sell-product" enctype="multipart/form-data" novalidate>
                     <label for="">Product Name</label>
                     <br>
                     <input type="text" name="title" value="<%= pastInput.title %>" autocomplete="off"  id="" required>
@@ -16,9 +16,16 @@
                     <br>
                     <input type="number" name="price" value="<%= pastInput.price %>"  id="price" required>
                     <br>
-                    <label for="image_url">Image URL</label>
-                    <input type="text"   name="image_url" value="<%= pastInput.image_url %>"  autocomplete="off" required>
+                    <label for="image">Image</label>
+                    <!-- <input type="text"   name="image_url" value="<%= pastInput.image_url %>"  autocomplete="off" required> -->
+                    <input 
+                    type="file" 
+                    name="image"
+                    id="image"
+                    autocomplete="off" 
+                    required>
                     <br>
+
                     <label  for="">Product Description</label>
                     <br>
                     <textarea rows="6"  name="description" id="description"  oninput="countCharacters()" required><%= pastInput.description %></textarea>

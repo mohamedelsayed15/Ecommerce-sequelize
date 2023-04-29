@@ -11,7 +11,7 @@
                 <% for(let i=0; i< products.length ;i++){ %>
 
                 <div class="flexbox-item">
-                    <img src="<%=products[i].image_url%>" alt="description of image" />
+                    <img src="/<%= products[i].image %>" alt="description of image" />
                     <div class="button-container">
                         <form action="/shop/cart/add-to-cart/<%= products[i].id %>" method="post">
                         <button class="button" id="add-to-cart">Add to Cart</button>

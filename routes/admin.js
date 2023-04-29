@@ -43,9 +43,9 @@ router.post('/sell-product' ,[
             return true
         }),
 
-    body('image_url')
-        .isURL()
-        .withMessage('enter a valid url'),
+    // body('image_url')
+    //     .isURL()
+    //     .withMessage('enter a valid url'),
 
     body('description')
         .custom((value, { req }) => { 
@@ -95,9 +95,9 @@ router.post('/edit-product',[
             return true
         }),
 
-    body('image_url')
-        .isURL()
-        .withMessage('enter a valid url'),
+    // body('image_url')
+    //     .isURL()
+    //     .withMessage('enter a valid url'),
 
     body('description')
         .custom((value, { req }) => { 
