@@ -206,17 +206,45 @@ exports.getOrders = async (req, res , next ) => {
 exports.getInvoice = async (req, res, next) => { 
     try {
         const orderId = req.params.orderId
+        
+        const order = await Order.findByPk(orderId)
+
+        if (!order || order.userId !== req.user.id) {
+            return res.redirect('/404')
+        }
         const invoiceName = 'invoice-' + orderId + '.pdf'
         const invoicePath = path.join('data', 'invoices', invoiceName)
+        /*//other code
 
-        const file = await fs.promises.readFile(invoicePath)
+        const order = await req.user.getOrders({where:{
+            id: orderId
+        }})
 
-        res.send(file)
+        if(order.length < 1){
+            return res.redirect('/404')
+        }
+        */
+
+        //for small files only
+        //const file = await fs.promises.readFile(invoicePath)
+
+        //sending file on chunks of data instead of loading it to memory as a whole
+        const file = fs.createReadStream(invoicePath)
+
+        file.on('error', (error) => { 
+            return next(error)
+        })
+
+        res.setHeader('Content-Type', 'application/pdf')
+        // replace inline with attachment to download the file without preview
+        res.setHeader('Content-Disposition',`inline; filename=${invoiceName}`)
+
+        //res.send(file)
+        file.pipe(res)
 
     } catch (e) { 
-
-        const error = new Error(e)
         console.log(e)
+        const error = new Error(e)
         error.httpStatusCode = 500
         return next(error)
     }
