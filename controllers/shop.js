@@ -3,6 +3,7 @@ const { Order, OrderItem } = require('../models/order')
 const { User } = require('../models/user')
 const path = require('path')
 const fs = require('fs')
+const PDFDocument = require('pdfkit')
 //========================================================
 
 exports.getCart = async (req, res , next ) => { 
@@ -209,11 +210,52 @@ exports.getInvoice = async (req, res, next) => {
         
         const order = await Order.findByPk(orderId)
 
+        const orderItems = await order.getProducts()
+
+        console.log(orderItems[0].toJSON())
+
         if (!order || order.userId !== req.user.id) {
             return res.redirect('/404')
         }
         const invoiceName = 'invoice-' + orderId + '.pdf'
         const invoicePath = path.join('data', 'invoices', invoiceName)
+
+        const pdfDoc = new PDFDocument()
+
+        res.setHeader('Content-Type', 'application/pdf')
+
+        res.setHeader('Content-Disposition',`inline; filename=${invoiceName}`)
+
+        pdfDoc.pipe(fs.createWriteStream(invoicePath))// saving pdf on the server
+
+        pdfDoc.pipe(res)//sending pdf to the client
+
+        pdfDoc.fontSize(26).text('Trader', {// writing a single line into the pdf file
+            //underline: true,
+            align:'center',
+            
+        })
+        pdfDoc.fontSize(16).text('\n\n')
+        let total=0
+        
+
+        for (let i = 0; i < orderItems.length; i++){
+            
+            pdfDoc.text('Product Name : ' + orderItems[i].title)
+            pdfDoc.text('\nProduct Price : $' + orderItems[i].price)
+            pdfDoc.text('Product quantity : ' + orderItems[i].orderItem.quantity)
+            pdfDoc.text('Product Total Price : $' +
+                (orderItems[i].price * orderItems[i].orderItem.quantity))
+            pdfDoc.text('\n----------------------------------------\n\n', {
+                align:'center'
+            })
+            total += orderItems[i].price * orderItems[i].orderItem.quantity
+        }
+
+        pdfDoc.fontSize(16).text('Order Total:$ ' + total)
+
+        pdfDoc.end()//end writing 
+
         /*//other code
 
         const order = await req.user.getOrders({where:{
@@ -228,19 +270,21 @@ exports.getInvoice = async (req, res, next) => {
         //for small files only
         //const file = await fs.promises.readFile(invoicePath)
 
+        // reading files 
+
         //sending file on chunks of data instead of loading it to memory as a whole
-        const file = fs.createReadStream(invoicePath)
+        // const file = fs.createReadStream(invoicePath)
 
-        file.on('error', (error) => { 
-            return next(error)
-        })
+        // file.on('error', (error) => { 
+        //     return next(error)
+        // })
 
-        res.setHeader('Content-Type', 'application/pdf')
-        // replace inline with attachment to download the file without preview
-        res.setHeader('Content-Disposition',`inline; filename=${invoiceName}`)
+        // res.setHeader('Content-Type', 'application/pdf')
+        // // replace inline with attachment to download the file without preview
+        // res.setHeader('Content-Disposition',`inline; filename=${invoiceName}`)
 
-        //res.send(file)
-        file.pipe(res)
+        // //res.send(file)
+        // file.pipe(res)
 
     } catch (e) { 
         console.log(e)
