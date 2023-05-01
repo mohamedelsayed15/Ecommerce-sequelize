@@ -214,8 +214,9 @@ exports.getInvoice = async (req, res, next) => {
         res.send(file)
 
     } catch (e) { 
-        console.log(e)
+
         const error = new Error(e)
+        console.log(e)
         error.httpStatusCode = 500
         return next(error)
     }
