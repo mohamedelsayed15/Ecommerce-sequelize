@@ -21,7 +21,7 @@ exports.welcomeEmail = (email, name) => {
 }
 
 
-exports.sendVerificationEmail = (email, name, token) => { 
+exports.sendVerificationForEmail = (email, name, token) => { 
 
     try {
 
@@ -36,7 +36,7 @@ exports.sendVerificationEmail = (email, name, token) => {
         console.log(e)
     }
 }
-exports.sendVerificationPassword = (email, name, token) => { 
+exports.sendVerificationForPassword = (email, name, token) => { 
     try {
     transporter.sendMail({
         to: email,

@@ -1,11 +1,6 @@
 const Product = require('../models/product')
-const {Op}  = require('sequelize')
-const Cart = require('../models/cart')
-const { User } = require('../models/user')
 const { validationResult } = require('express-validator')
 const { deleteFile } = require('../util/file') 
-
-
 
 exports.getAddProduct = async (req, res , next ) => { 
     try {

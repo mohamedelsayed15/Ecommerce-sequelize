@@ -232,7 +232,6 @@ exports.getInvoice = async (req, res, next) => {
         pdfDoc.fontSize(26).text('Trader', {// writing a single line into the pdf file
             //underline: true,
             align:'center',
-            
         })
         pdfDoc.fontSize(16).text('\n\n')
         let total=0

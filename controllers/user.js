@@ -6,7 +6,7 @@ const Product =require('../models/product')
 const { validationResult } = require('express-validator/check')
 const {
     welcomeEmail,
-    sendVerificationPassword,
+    sendVerificationForPassword,
 } = require('../email/sg')
 
 exports.getSignup = async (req, res , next ) => { 
@@ -221,7 +221,7 @@ exports.postForgotPassword = async (req, res , next ) => {
 
         await user.save()
 
-        sendVerificationPassword(user.email,user.name,token)
+        sendVerificationForPassword(user.email,user.name,token)
 
         res.redirect('/')
 
