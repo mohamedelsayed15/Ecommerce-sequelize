@@ -64,7 +64,7 @@ app.use('/user', userRoutes)
 //main
 app.get('/', async (req, res, next) => { 
     try {
-        const limit = 9
+        const limit = 6
 
         let page = +req.query.page || 1 // converting to number default value = 1
 

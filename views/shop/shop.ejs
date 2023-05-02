@@ -31,7 +31,7 @@
             </div>
             <section class="pagination" >
                 <% if(count/limit< 8){ %>   
-                    <%for(let i = 1 ; i <= count/limit ; i++) { %>
+                    <%for(let i = 1 ; i <= Math.ceil(count/limit) ; i++) { %>
                         <a href="?page=<%= i %>"><%= i %></a>
                     <% } %>
                     <%}else{%>
