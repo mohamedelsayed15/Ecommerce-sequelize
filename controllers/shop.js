@@ -31,7 +31,7 @@ exports.getCart = async (req, res , next ) => {
         let cartProducts = products.map(product => { 
             return {
                 id : product.id,
-                image_url :product.image_url,
+                image :product.image,
                 title : product.title,
                 price: product.price,
                 quantity : product.cartItem.quantity,
@@ -191,11 +191,12 @@ exports.orderCart = async (req, res , next ) => {
 exports.getOrders = async (req, res , next ) => {
     try {
 
-        const orders = await req.user.getOrders({ include: 'products' })
+        const orders = await req.user.getOrders()
 
-        console.log(orders[0].toJSON())
-
-        res.send(orders)
+        res.render('shop/orders.ejs', {
+            pageTitle: 'Orders',
+            orders
+        })
 
     } catch (e) { 
         console.log(e)
@@ -211,8 +212,6 @@ exports.getInvoice = async (req, res, next) => {
         const order = await Order.findByPk(orderId)
 
         const orderItems = await order.getProducts()
-
-        console.log(orderItems[0].toJSON())
 
         if (!order || order.userId !== req.user.id) {
             return res.redirect('/404')

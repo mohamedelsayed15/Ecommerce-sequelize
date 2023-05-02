@@ -14,7 +14,7 @@ main {
     flex-wrap: wrap;/* allow multiple lines*/
 }
 p{
-    display: inline;
+    display: block;
 }
 form{
     display: inline;
@@ -32,7 +32,7 @@ form{
     word-wrap: break-word;/* breaks the line*/
     flex-basis: 25%;
     margin-bottom: 20px;
-    
+    display: inline;
 }
 .flexbox-item:hover{
     /*border: #D3D3D3 solid;*/
@@ -44,7 +44,7 @@ form{
     background-color: #f4f4f4;
     background-color: #D3D3D3;
     background-color: #FFFFFF;
-
+    display: inline;
     margin-top: 9px;
     margin-bottom: 3px;
 }
@@ -56,16 +56,14 @@ form{
     width: 45%;
 }
 .button-container button{
-    text-align:center;
-    font-weight:400;
+    font-weight: 200;
     font-size: 16px;
-    border-radius: 15px;
-    background-color:#333;
-    border: #333 solid 3px;
-    color: white;
-    width: 30%;
-    padding-top: 5px;
-    padding-bottom: 5px;
+    border-radius: 5px;
+    background-color:white;
+    border: none;
+    color: black;
+    padding: 7px 15px;
+    border: black solid 3px;
 }
 .button-container a{
     text-align:center;
@@ -89,14 +87,29 @@ form{
     border-color: #D3D3D3;
 }
 .button:hover{
-    color: #333;
-    background-color: #FFFFFF;
-    background-color: #D3D3D3 ;
-    border-color: #D3D3D3;
-
+    background-color: black ;
+    color: white;
 }
 .flexbox-item img{
     border-radius: 2px;
-    width: 100%;
+    width: 23%;
     height: 250px;
+}
+#order{
+    margin:0;
+    margin-top:0.5rem;
+    margin-left: 35%;
+    font-weight: 200;
+    font-size: 16px;
+    border-radius: 5px;
+    background-color:white;
+    border: none;
+    color: black;
+    padding: 7px 15px;
+    border: black solid 3px;
+    display: inline;
+}
+#order:hover{
+    background-color: black ;
+    color: white;
 }

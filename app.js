@@ -63,13 +63,28 @@ app.use('/shop', shopRoutes)
 app.use('/user', userRoutes)
 //main
 app.get('/', async (req, res, next) => { 
-    
     try {
-        
-        const products = await Product.findAll()
+        const limit = 9
+
+        let page = +req.query.page || 1 // converting to number default value = 1
+
+        if (!Number.isInteger(page)) { page = 1 }
+
+        const offset = (page - 1) * limit;
+
+        const products = await Product.findAndCountAll({
+            limit,
+            offset,
+            order: [['createdAt', 'DESC']],
+        })
+
+        console.log(products.count)
 
         res.render('shop/shop.ejs', {
-            products,
+            products: products.rows,
+            count: products.count,
+            limit,
+            page,
             pageTitle: 'Trader',
             path: '/'
         })
@@ -148,8 +163,17 @@ Order.belongsToMany(Product, { through: OrderItem })
 Product.belongsToMany(Order, { through: OrderItem })
 
 
-const me = async () => await sequelize.sync()//{force : true}//during development only
-me()
+sequelize.sync().then(async () => {
+    // for (let i = 0; i < 30; i++){
+    //     await Product.create({
+    //         title: 'Cubii JR2+, Under Desk Elliptical, Under Desk Bike Pedal Exerciser, Seated Elliptical, Bluetooth, Work from Home Fitness, Mini Elliptical, Cubii Exerciser for Seniors, Desk Exercise, Newest, Aqua',
+    //         description: 'Cubii JR2+, Under Desk Elliptical, Under Desk Bike Pedal Exerciser, Seated Elliptical, Bluetooth, Work from Home Fitness, Mini Elliptical, Cubii Exerciser for Seniors, Desk Exercise, Newest, Aqua',
+    //         price: 142.22,
+    //         image: 'images/undefined-Update css margin vs padding-2.jpeg',
+    //         userId: 3
+    //     })
+    // }
+})//{force : true}//during development only
 
 //=================== listener ======================
 app.listen(process.env.PORT, () => { 

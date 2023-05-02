@@ -8,10 +8,9 @@
 
         <main>
             <div class="flexbox-container">
-                <% for(let i=0; i< products.length ;i++){ %>
-
-                <div class="flexbox-item">
-                    <img src="/<%= products[i].image %>" alt="description of image" />
+                <% for(let i= 0; i< products.length ;i++){ %>
+                <div class="flexbox-item" >
+                    <img src="/<%= products[i].image %>"  alt="description of image"  />
                     <div class="button-container">
                         <form action="/shop/cart/add-to-cart/<%= products[i].id %>" method="post">
                         <button class="button" id="add-to-cart">Add to Cart</button>
@@ -19,17 +18,37 @@
                         <a class="button" href="/shop/browse-product/<%= products[i].id %>">Browse</a>
                         </form>
                         </div>
-
                     <p class="price">$<%= products[i].price %></p>
                     <br>
                     
                     <p><%= products[i].title %></p>
                     <% if(products[i].title.length > 150){%>
-                    <a href="#">...</a>
+                    
                     <%}%>
                     
                 </div>
                 <% }%>
             </div>
+            <section class="pagination" >
+                <% if(count/limit< 8){ %>   
+                    <%for(let i = 1 ; i <= count/limit ; i++) { %>
+                        <a href="?page=<%= i %>"><%= i %></a>
+                    <% } %>
+                    <%}else{%>
+                        <% if(page !== 1) {%>
+                            <a href="?page=<%= page-1 %>"><%= page-1 %></a>
+                                
+                            <% } %>
+                            <% let pages = Math.ceil(count/limit)-page %>
+                            <% if(pages > 7){ pages = 7} %>
+                            
+                        <%for(let i = page ; i <= page+pages ; i++){%>
+                            <% if(i>=Math.ceil(count/limit)){ break;} %>
+                        <a href="?page=<%= i %>"><%= i %></a>
+                        <%}%>
+                    <p>...&nbsp;&nbsp;&nbsp;</p> 
+                    <a href="?page=<%= Math.ceil(count/limit) %>"><%= Math.ceil(count/limit) %></a>
+                    <%}%>
+            </section>
         </main>
         <%- include('../includes/footer.ejs') %>

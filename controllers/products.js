@@ -5,6 +5,8 @@ const { User } = require('../models/user')
 const { validationResult } = require('express-validator')
 const { deleteFile } = require('../util/file') 
 
+
+
 exports.getAddProduct = async (req, res , next ) => { 
     try {
         res.render('admin/sell-product.ejs',{
@@ -74,8 +76,6 @@ exports.postAddProduct = async (req, res , next ) => {
         return next(error)
     }
 }
-
-
 exports.getProducts = async (req, res , next ) => {
     try {
 
@@ -94,7 +94,6 @@ exports.getProducts = async (req, res , next ) => {
         return next(error)
     }
 }
-
 exports.browseProduct = async (req, res , next ) => {
     try {
         const product = await Product.findByPk(req.params.id)

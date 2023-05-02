@@ -7,17 +7,18 @@
 <%- include('../includes/nav.ejs') %>
 
         <main>
-            <form action="/shop/order-cart %>" method="post">
-                <input type="hidden" name="_csrf" value="<%= csrfToken %>">
-                <button class="button" id="order" >Order Now</button>
-            </form>
+            
             
             <div class="flexbox-container">
-                <h1 style = "margin-left: 22%;">Subtotal (<%= products.length %> items): $<%= subtotal %></h1>
-                <% for(let i=0; i< products.length ;i++){ %>
+                <h1 style = "margin-left: 22%; display: inline;">Subtotal (<%= products.length %> items): $<%= subtotal %></h1>
+                <form action="/shop/order-cart %>"  method="post">
+                    <input type="hidden" name="_csrf" value="<%= csrfToken %>">
+                    <button class="button" id="order" >Order Now</button>
+                </form>
+                <% for(let i=products.length-1; i>= 0 ;i--){ %>
 
-                <div class="flexbox-item">
-                    <img src="<%=products[i].image_url %>" alt="description of image" />
+                <div class="flexbox-item" style="display: inline;">
+                    <img src="/<%= products[i].image %>" width="100" height="100" alt="description of image" />
                     <p><%= products[i].title %></p>
                     <div class="button-container">
                         <form action="/shop/cart/add-to-cart/<%= products[i].id %>" method="post">
