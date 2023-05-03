@@ -164,13 +164,13 @@ Product.belongsToMany(Order, { through: OrderItem })
 
 
 sequelize.sync().then(async () => {
+    const user = await User.findByPk(1)
     for (let i = 0; i < 50; i++){
-        await Product.create({
+        await user.createProduct({
             title: 'Cubii JR2+, Under Desk Elliptical, Under Desk Bike Pedal Exerciser, Seated Elliptical, Bluetooth, Work from Home Fitness, Mini Elliptical, Cubii Exerciser for Seniors, Desk Exercise, Newest, Aqua',
             description: 'Cubii JR2+, Under Desk Elliptical, Under Desk Bike Pedal Exerciser, Seated Elliptical, Bluetooth, Work from Home Fitness, Mini Elliptical, Cubii Exerciser for Seniors, Desk Exercise, Newest, Aqua',
             price: 142.22,
-            image: 'images/image-1683052298511-83007541661drpi3cYUL._AC_UL320_.jpg',
-            userId: 1
+            image: 'images/image-1683052298511-83007541661drpi3cYUL._AC_UL320_.jpg'
         })
     }
 })//{force : true}//during development only
