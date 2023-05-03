@@ -170,7 +170,9 @@ sequelize.sync().then(async () => {
         password: "123456"
     })
     await Promise.all([
-        user.createCart()
+        Cart.create({
+            userId:1
+        })
     ])
     for (let i = 0; i < 50; i++){
         await Product.create({
