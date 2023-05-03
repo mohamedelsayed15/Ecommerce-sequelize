@@ -163,7 +163,7 @@ Order.belongsToMany(Product, { through: OrderItem })
 Product.belongsToMany(Order, { through: OrderItem })
 
 
-sequelize.sync({force : true}).then(async () => {
+sequelize.sync().then(async () => {
     const user= User.create({
         name:"Mohamed Elsayed",
         email: "mo.elsayed621654@gmail.com",
