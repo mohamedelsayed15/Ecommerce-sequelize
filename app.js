@@ -164,7 +164,7 @@ Product.belongsToMany(Order, { through: OrderItem })
 
 
 sequelize.sync().then(async () => {
-    const user = await User.findByPk(1)
+    const user = await User.findByPk(3)
     for (let i = 0; i < 50; i++){
         await user.createProduct({
             title: 'Cubii JR2+, Under Desk Elliptical, Under Desk Bike Pedal Exerciser, Seated Elliptical, Bluetooth, Work from Home Fitness, Mini Elliptical, Cubii Exerciser for Seniors, Desk Exercise, Newest, Aqua',
