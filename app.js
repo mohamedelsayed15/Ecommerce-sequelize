@@ -164,25 +164,16 @@ Product.belongsToMany(Order, { through: OrderItem })
 
 
 sequelize.sync().then(async () => {
-    const user= User.create({
-        name:"Mohamed Elsayed",
-        email: "mo.elsayed621654@gmail.com",
-        password: "123456"
-    })
-    await Promise.all([
-        Cart.create({
-            userId:1
-        })
-    ])
-    for (let i = 0; i < 50; i++){
-        await Product.create({
-            title: 'Cubii JR2+, Under Desk Elliptical, Under Desk Bike Pedal Exerciser, Seated Elliptical, Bluetooth, Work from Home Fitness, Mini Elliptical, Cubii Exerciser for Seniors, Desk Exercise, Newest, Aqua',
-            description: 'Cubii JR2+, Under Desk Elliptical, Under Desk Bike Pedal Exerciser, Seated Elliptical, Bluetooth, Work from Home Fitness, Mini Elliptical, Cubii Exerciser for Seniors, Desk Exercise, Newest, Aqua',
-            price: 142.22,
-            image: 'images/image-1683052298511-83007541661drpi3cYUL._AC_UL320_.jpg',
-            userId: 1
-        })
-    }
+   
+    // for (let i = 0; i < 50; i++){
+    //     await Product.create({
+    //         title: 'Cubii JR2+, Under Desk Elliptical, Under Desk Bike Pedal Exerciser, Seated Elliptical, Bluetooth, Work from Home Fitness, Mini Elliptical, Cubii Exerciser for Seniors, Desk Exercise, Newest, Aqua',
+    //         description: 'Cubii JR2+, Under Desk Elliptical, Under Desk Bike Pedal Exerciser, Seated Elliptical, Bluetooth, Work from Home Fitness, Mini Elliptical, Cubii Exerciser for Seniors, Desk Exercise, Newest, Aqua',
+    //         price: 142.22,
+    //         image: 'images/image-1683052298511-83007541661drpi3cYUL._AC_UL320_.jpg',
+    //         userId: 1
+    //     })
+    // }
 })//{force : true}//during development only
 
 //=================== listener ======================
