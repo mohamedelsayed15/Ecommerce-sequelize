@@ -147,9 +147,8 @@ exports.postEditProduct = async (req, res , next ) => {
                     })
                 }
 
-        console.log(image.path)
-        
-        
+        //console.log(image.path)
+
         const product = await Product.findByPk(req.body.id)
 
         if (req.user.id !== product.userId) { return res.status(403).send() }
@@ -158,7 +157,7 @@ exports.postEditProduct = async (req, res , next ) => {
 
         updates.forEach(update => product[update] = req.body[update])
 
-        if (image.path) { 
+        if (image) { 
             deleteFile(product.image)//from file.js in util
             product.image = image.path
         }
