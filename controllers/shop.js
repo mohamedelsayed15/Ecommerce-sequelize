@@ -115,7 +115,6 @@ exports.minusCartItem = async (req, res , next ) => {
 }
 exports.deleteProductFromCart = async (req, res , next ) => { 
     try {
-        req.user = await User.findOne({ where: { email: 'mo.elsayed621654@gmail.com' } })
 
         let cart = await req.user.getCart()
 
@@ -123,7 +122,7 @@ exports.deleteProductFromCart = async (req, res , next ) => {
 
         let products = await cart.getProducts({ where: { id: req.params.id } })
 
-        //console.log(products[0].cartItem.toJSON())
+        console.log(products[0].cartItem.toJSON())
 
         await products[0].cartItem.destroy()
 
