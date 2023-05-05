@@ -11,11 +11,16 @@ const fileStorage = multer.diskStorage({
     }
 })
 const fileFilter = (req,file,cb) => {
-    if (file.mimetype === 'image/png' || 'image/jpg' || 'image/jpeg') { 
-        cb(null, true)
-    } else {
-        cb(null, false)
+    // if (file.mimetype === 'image/png' || 'image/jpg' || 'image/jpeg') { // wrong code // expression in js always become true
+    //     cb(null, true)
+    // } else {
+    //     cb(null, false)
+    // }
+
+    if (!file.originalname.match(/\.(jpg|png|gif|jpeg)$/)){
+        return cb(null, false) //reject // we call RETURN
     }
+    cb(null,true)//accept
 }
 const upload = multer({
     storage: fileStorage,
